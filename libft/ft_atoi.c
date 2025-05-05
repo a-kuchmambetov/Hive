@@ -17,34 +17,39 @@ static char	*ft_trim_local(const char *nptr)
 	int	index;
 
 	index = 0;
-	while (nptr[index] == ' ' || nptr[index] == '\f' || nptr[index] == '\n' || nptr[index] == '\r'
-		|| nptr[index] == '\t' || nptr[index] == '\v' || nptr[index] == '+')
+	while (nptr[index] == 9 || nptr[index] == 10 || nptr[index] == 11
+		|| nptr[index] == 12 || nptr[index] == 13 || nptr[index] == 0 
+		|| nptr[index] == ' ' || nptr[index] == '+')
 		index++;
 	return ((char *) &nptr[index]);
 }
 
+static int	is_negtive(char val)
+{
+	if (val == '-')
+		return (-1);
+	return (1);
+}
+
 int	ft_atoi(const char *nptr)
 {
-	long int	number;
-	short int	sign;
-	int index;
+	long int		number;
+	int				index;
+	short int		sign;
 
-	sign = 1;
 	if (nptr == NULL)
 		return (0);
 	nptr = ft_trim_local(nptr);
 	index = 0;
+	sign = is_negtive(*nptr);
 	if (nptr[index] == '-')
-	{
-		sign = -1;
 		index++;
-	}
 	number = 0;
 	while (nptr[index] >= '0' && nptr[index] <= '9')
 	{
 		number *= 10;
 		number += nptr[index] - '0';
-		if (number > INT_MAX && sign == 1) 
+		if (number > INT_MAX && sign == 1)
 			return (INT_MAX);
 		else if (number > (long)INT_MAX + 1 && sign == -1)
 			return (INT_MIN);
@@ -52,3 +57,15 @@ int	ft_atoi(const char *nptr)
 	}
 	return (number * sign);
 }
+
+#include <stdio.h>
+
+//int main()
+//{
+//	//char str[20];
+//	//sprintf(str, "       %d", INT_MIN);
+//	//int res = ft_atoi(str);
+//	//int cmp = INT_MIN;
+
+//	int res = ft_atoi("+1");
+//}

@@ -1,22 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalnum.c                                       :+:      :+:    :+:   */
+/*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akuchmam <akuchmam@student.hive.fi>        #+#  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-04-14 14:13:46 by akuchmam          #+#    #+#             */
-/*   Updated: 2025-04-14 14:13:46 by akuchmam         ###   ########.fr       */
+/*   Created: 2025-05-05 10:41:10 by akuchmam          #+#    #+#             */
+/*   Updated: 2025-05-05 10:41:10 by akuchmam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_isalnum(int c)
+char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
-	if (c >= '0' && c <= '9')
-		return (1);
-	if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122))
-		return (1);
-	return (0);
+	const int		str_len = ft_strlen(s);
+	char			*str;
+	unsigned int	index;
+
+	str = ft_calloc(1, str_len + 1);
+	if (!str)
+		return (NULL);
+	index = 0;
+	while (s[index])
+	{
+		str[index] = f(index, s[index]);
+		index++;
+	}
+	return (str);
 }
