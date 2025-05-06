@@ -1,3 +1,4 @@
-.vscode\*
-libft\libftTester\*
+.vscode/*
 Done/Shell01/ex05/*
+libft/libftTester
+libft/libftTester/*
