@@ -19,7 +19,7 @@ static char	*ft_trim_local(const char *nptr)
 	index = 0;
 	while (nptr[index] == 9 || nptr[index] == 10 || nptr[index] == 11
 		|| nptr[index] == 12 || nptr[index] == 13 || nptr[index] == 0 
-		|| nptr[index] == ' ' || nptr[index] == '+')
+		|| nptr[index] == ' ')
 		index++;
 	return ((char *) &nptr[index]);
 }
@@ -42,7 +42,7 @@ int	ft_atoi(const char *nptr)
 	nptr = ft_trim_local(nptr);
 	index = 0;
 	sign = is_negtive(*nptr);
-	if (nptr[index] == '-')
+	if (nptr[index] == '-' || nptr[index] == '+')
 		index++;
 	number = 0;
 	while (nptr[index] >= '0' && nptr[index] <= '9')
@@ -51,21 +51,9 @@ int	ft_atoi(const char *nptr)
 		number += nptr[index] - '0';
 		if (number > INT_MAX && sign == 1)
 			return (INT_MAX);
-		else if (number > (long)INT_MAX + 1 && sign == -1)
+		else if (number > INT_MAX && sign == -1)
 			return (INT_MIN);
 		index++;
 	}
 	return (number * sign);
 }
-
-#include <stdio.h>
-
-//int main()
-//{
-//	//char str[20];
-//	//sprintf(str, "       %d", INT_MIN);
-//	//int res = ft_atoi(str);
-//	//int cmp = INT_MIN;
-
-//	int res = ft_atoi("+1");
-//}
