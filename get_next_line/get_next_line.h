@@ -16,12 +16,10 @@
 # include "stdlib.h"
 # include "unistd.h"
 
-typedef struct read_data {
-	char	*string;
-	int		end_of_line;
-	
-}	t_read_data;
+#define BUFFER_SIZE 42;
 
 char	*get_next_line(int fd);
+// Utils
+char	*ft_append_str(char *original, const char *addition);
 
 #endif
