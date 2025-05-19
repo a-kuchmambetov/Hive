@@ -20,6 +20,7 @@
 
 char	*get_next_line(int fd);
 // Utils
-char	*ft_append_str(char *original, const char *addition);
+int		ft_get_newline_i(char *src);
+char	*ft_append_str(const char *original, const char *addition);
 
 #endif
