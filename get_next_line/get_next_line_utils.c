@@ -14,57 +14,44 @@
 
 size_t	ft_strlen(const char *str)
 {
-	const size_t	buffer_size = BUFFER_SIZE;
 	size_t count;
 
 	if (str == NULL)
 		return (0);
 	count = 0;
-	while ((str[count] != '\0' || str[count] != '\n') && count < buffer_size)
+	while ((str[count] != '\0' || str[count] != '\n'))
 		count++;
-	return (count);
+	return (count++);
 }
 
-int	ft_get_newline_i(char *src)
+void	ft_strcpy_noendl(char **dest,const char *src, size_t len)
 {
-	const size_t	buffer_size = BUFFER_SIZE;
-	int	count;
+	size_t index;
 
-	count = 0;
-	while (count < buffer_size)
-	{
-		if (src[count] == '\n')
-			return (count);
-		count++;
-	}
-	return (-1);
+	index = 0;
+	while (index < len)
+		*dest[index] = src[index++];
 }
 
 // Wrong implementation fix it !!!
-char	*ft_append_str(const char *original, const char *addition)
+char	*ft_append_str(const char *src, const char *buffer)
 {
-	const size_t	buffer_size = BUFFER_SIZE;
-	const size_t	org_len = ft_strlen(original);
-	const size_t	add_len = ft_strlen(addition);
+	const size_t	src_len = ft_strlen(src);
+	const size_t	buf_len = ft_strlen(buffer);
+	const size_t	size = src_len + buf_len + 1;
 	char	*temp;
 	size_t	index;
 
-	if (!addition)
-		return (NULL);
-	temp = malloc(org_len + add_len + 1);
+	if (buf_len <= 0)
+		return ((char *)src);
+	temp = malloc(size);
 	if (!temp)
 		return (NULL);
+	temp [size] = '\0';
+	if (src_len > 0)
+		ft_strcpy_noendl(&temp, src, src_len);
 	index = 0;
-	while (original[index] != '\0' && index < buffer_size)
-		temp[index] = original[index++];
-	while (addition[index] != '\n' && index < buffer_size)
-	{
-		temp[index] = addition[index];
-		index++;
-	}
-	if (addition[index] == '\n')
-		temp[index] = '\n';
-	if (original)
-		free(original);
+	while (index < buf_len)
+		temp[src_len + index] = buffer[index++];
 	return (temp);
 }

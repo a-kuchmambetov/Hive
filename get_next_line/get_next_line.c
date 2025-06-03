@@ -24,7 +24,7 @@ static char	*ft_read_line(int fd, char *buffer)
 	{
 		if (read(fd, buffer, buffer_size) < 0)
 			return (NULL);
-		index = ft_get_newline_i(buffer);
+		
 		res = ft_append_str(res, buffer);
 	}
 	return (res);
@@ -32,14 +32,9 @@ static char	*ft_read_line(int fd, char *buffer)
 
 char	*get_next_line(int fd)
 {
-	const size_t		buffer_size = BUFFER_SIZE;
-	static char	*string;
-	char *buffer;
+	static char	buffer [BUFFER_SIZE];
+	char *string;
 
-	buffer = malloc(buffer_size);
-	if (!buffer)
-		return (NULL);
-	buffer[buffer_size] = '\0';
 	// Read untill the new line
 	string = ft_read_line(fd, buffer);
 	// Copy buffer to string with '\n' and rest
@@ -48,7 +43,6 @@ char	*get_next_line(int fd)
 	// Clear buffer
 	if (!string)
 		return (NULL);
-	free(buffer);
 	return (string);
 }
 
