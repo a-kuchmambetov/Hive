@@ -12,46 +12,103 @@
 
 #include "get_next_line.h"
 
-size_t	ft_strlen(const char *str)
+size_t	ft_strlen(const char *s)
 {
-	size_t count;
+	size_t	len;
 
-	if (str == NULL)
+	if (!s)
 		return (0);
-	count = 0;
-	while ((str[count] != '\0' || str[count] != '\n'))
-		count++;
-	return (count++);
+	len = 0;
+	while (s[len])
+		len++;
+	return (len);
 }
 
-void	ft_strcpy_noendl(char **dest,const char *src, size_t len)
+char	*ft_strchr(const char *s, int c)
 {
-	size_t index;
-
-	index = 0;
-	while (index < len)
-		*dest[index] = src[index++];
+	if (!s)
+		return (NULL);
+	while (*s)
+	{
+		if (*s == (char)c)
+			return ((char *)s);
+		s++;
+	}
+	if ((char)c == '\0')
+		return ((char *)s);
+	return (NULL);
 }
 
-// Wrong implementation fix it !!!
-char	*ft_append_str(const char *src, const char *buffer)
+char	*ft_strdup(const char *s1)
 {
-	const size_t	src_len = ft_strlen(src);
-	const size_t	buf_len = ft_strlen(buffer);
-	const size_t	size = src_len + buf_len + 1;
-	char	*temp;
+	char	*copy;
+	size_t	len;
+	size_t	i;
+
+	if (!s1)
+		return (NULL);
+	len = ft_strlen(s1);
+	copy = malloc(len + 1);
+	if (!copy)
+		return (NULL);
+	i = 0;
+	while (i < len)
+	{
+		copy[i] = s1[i];
+		i++;
+	}
+	copy[i] = '\0';
+	return (copy);
+}
+
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	char	*substr;
+	size_t	i;
+	size_t	s_len;
+
+	if (!s)
+		return (NULL);
+	s_len = ft_strlen(s);
+	if (start >= s_len)
+		return (ft_strdup(""));
+	if (len > s_len - start)
+		len = s_len - start;
+	substr = malloc(len + 1);
+	if (!substr)
+		return (NULL);
+	i = 0;
+	while (i < len && s[start + i])
+	{
+		substr[i] = s[start + i];
+		i++;
+	}
+	substr[i] = '\0';
+	return (substr);
+}
+
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	const size_t	len1 = ft_strlen(s1);
+	const size_t	len2 = ft_strlen(s2);
+	char	*joined;
 	size_t	index;
 
-	if (buf_len <= 0)
-		return ((char *)src);
-	temp = malloc(size);
-	if (!temp)
+	if (!s1 && !s2)
 		return (NULL);
-	temp [size] = '\0';
-	if (src_len > 0)
-		ft_strcpy_noendl(&temp, src, src_len);
+	if (!s1)
+		return (ft_strdup(s2));
+	if (!s2)
+		return (ft_strdup(s1));
+	joined = malloc(len1 + len2 + 1);
+	if (!joined)
+		return (NULL);
 	index = 0;
-	while (index < buf_len)
-		temp[src_len + index] = buffer[index++];
-	return (temp);
+	while (index < len1)
+		joined[index++] = s1[index];
+	index = 0;
+	while (index < len2)
+		joined[len1 + index++] = s2[index];
+	joined[len1 + len2 + 1] = '\0';
+	return (joined);
 }

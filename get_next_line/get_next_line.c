@@ -12,51 +12,113 @@
 
 #include "get_next_line.h"
 
-static char	*ft_read_line(int fd, char *buffer)
+static char	*read_and_append(int fd, char *stash)
 {
-	const size_t	buffer_size = BUFFER_SIZE;
-	char	*res;
-	int	index;
+	char	*buffer;
+	char	*temp;
+	int		bytes_read;
 
-	index = -1;
-	res = NULL;
-	while (index == -1)
+	buffer = malloc(BUFFER_SIZE + 1);
+	if (!buffer)
+		return (NULL);
+	bytes_read = 1;
+	while (!ft_strchr(stash, '\n') && bytes_read != 0)
 	{
-		if (read(fd, buffer, buffer_size) < 0)
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		if (bytes_read == -1)
+		{
+			free(buffer);
 			return (NULL);
-		
-		res = ft_append_str(res, buffer);
+		}
+		buffer[bytes_read] = '\0';
+		temp = ft_strjoin(stash, buffer);
+		free(stash);
+		stash = temp;
 	}
-	return (res);
+	free(buffer);
+	return (stash);
+}
+
+static char	*extract_line(char *stash)
+{
+	char	*line;
+	int		i;
+
+	if (!stash || !*stash)
+		return (NULL);
+	i = 0;
+	while (stash[i] && stash[i] != '\n')
+		i++;
+	if (stash[i] == '\n')
+		i++;
+	line = ft_substr(stash, 0, i);
+	return (line);
+}
+
+static char	*update_stash(char *stash)
+{
+	char	*new_stash;
+	int		i;
+
+	i = 0;
+	while (stash[i] && stash[i] != '\n')
+		i++;
+	if (!stash[i])
+	{
+		free(stash);
+		return (NULL);
+	}
+	new_stash = ft_substr(stash, i + 1, ft_strlen(stash) - i);
+	free(stash);
+	return (new_stash);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	buffer [BUFFER_SIZE];
-	char *string;
+	static char	*stash;
+	char		*line;
 
-	// Read untill the new line
-	string = ft_read_line(fd, buffer);
-	// Copy buffer to string with '\n' and rest
-	// Output res until '\n'
-	// Clear before '\n' to string
-	// Clear buffer
-	if (!string)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	return (string);
+	stash = read_and_append(fd, stash);
+	if (!stash)
+		return (NULL);
+	line = extract_line(stash);
+	stash = update_stash(stash);
+	return (line);
 }
 
 #include <fcntl.h>
-#include "unistd.h"
-#include "stdio.h"
+#include <stdio.h>
 
-int main ()
+int main(void)
 {
-	const size_t	buffer_size = BUFFER_SIZE;
-	char buffer[buffer_size];
-	int length;
+	int fd;
+	char *line;
+	int line_count = 0;
 
-	int fd = open("test_file_1.txt", O_RDONLY);
-	char *str = get_next_line(fd);
+	//fd = open("test_file_1.txt", O_RDONLY);
+	fd = open("test_multiline.txt", O_RDONLY);
+	if (fd == -1)
+	{
+		printf("Error opening file\n");
+		return (1);
+	}
+
+	printf("Reading file line by line:\n");
+	printf("-------------------------\n");
+
+	while ((line = get_next_line(fd)) != NULL)
+	{
+		line_count++;
+		printf("Line %d: %s", line_count, line);
+		if (line[ft_strlen(line) - 1] != '\n')
+			printf("\n");
+		free(line);
+	}
+	free(line);
+	printf("-------------------------\n");
+	printf("Total lines read: %d\n", line_count);
 	close(fd);
+	return (0);
 }
