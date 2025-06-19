@@ -91,8 +91,8 @@ char	*ft_strjoin(char const *s1, char const *s2)
 {
 	const size_t	len1 = ft_strlen(s1);
 	const size_t	len2 = ft_strlen(s2);
-	char	*joined;
-	size_t	index;
+	char			*joined;
+	size_t			i;
 
 	if (!s1 && !s2)
 		return (NULL);
@@ -103,12 +103,15 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	joined = malloc(len1 + len2 + 1);
 	if (!joined)
 		return (NULL);
-	index = 0;
-	while (index < len1)
-		joined[index++] = s1[index];
-	index = 0;
-	while (index < len2)
-		joined[len1 + index++] = s2[index];
-	joined[len1 + len2 + 1] = '\0';
+	i = 0;
+	while (i < len1 || i < len2)
+	{
+		if (i < len1)
+			joined[i] = s1[i];
+		if (i < len2)
+			joined[len1 + i] = s2[i];
+		i++;
+	}
+	joined[len1 + len2] = '\0';
 	return (joined);
 }

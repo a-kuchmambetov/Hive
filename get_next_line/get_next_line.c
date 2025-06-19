@@ -12,7 +12,7 @@
 
 #include "get_next_line.h"
 
-static char	*read_and_append(int fd, char *stash)
+static char	*read_line(int fd, char *stash)
 {
 	char	*buffer;
 	char	*temp;
@@ -39,7 +39,7 @@ static char	*read_and_append(int fd, char *stash)
 	return (stash);
 }
 
-static char	*extract_line(char *stash)
+static char	*get_line(char *stash)
 {
 	char	*line;
 	int		i;
@@ -55,7 +55,7 @@ static char	*extract_line(char *stash)
 	return (line);
 }
 
-static char	*update_stash(char *stash)
+static char	*save_stash(char *stash)
 {
 	char	*new_stash;
 	int		i;
@@ -80,45 +80,10 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	stash = read_and_append(fd, stash);
+	stash = read_line(fd, stash);
 	if (!stash)
 		return (NULL);
-	line = extract_line(stash);
-	stash = update_stash(stash);
+	line = get_line(stash);
+	stash = save_stash(stash);
 	return (line);
-}
-
-#include <fcntl.h>
-#include <stdio.h>
-
-int main(void)
-{
-	int fd;
-	char *line;
-	int line_count = 0;
-
-	//fd = open("test_file_1.txt", O_RDONLY);
-	fd = open("test_multiline.txt", O_RDONLY);
-	if (fd == -1)
-	{
-		printf("Error opening file\n");
-		return (1);
-	}
-
-	printf("Reading file line by line:\n");
-	printf("-------------------------\n");
-
-	while ((line = get_next_line(fd)) != NULL)
-	{
-		line_count++;
-		printf("Line %d: %s", line_count, line);
-		if (line[ft_strlen(line) - 1] != '\n')
-			printf("\n");
-		free(line);
-	}
-	free(line);
-	printf("-------------------------\n");
-	printf("Total lines read: %d\n", line_count);
-	close(fd);
-	return (0);
 }
