@@ -41,29 +41,29 @@ char	*ft_strchr(const char *s, int c)
 
 char	*ft_strdup(const char *s1)
 {
-	char	*copy;
+	char	*res;
 	size_t	len;
 	size_t	i;
 
 	if (!s1)
 		return (NULL);
 	len = ft_strlen(s1);
-	copy = malloc(len + 1);
-	if (!copy)
+	res = malloc(len + 1);
+	if (!res)
 		return (NULL);
 	i = 0;
 	while (i < len)
 	{
-		copy[i] = s1[i];
+		res[i] = s1[i];
 		i++;
 	}
-	copy[i] = '\0';
-	return (copy);
+	res[i] = '\0';
+	return (res);
 }
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char	*substr;
+	char	*res;
 	size_t	i;
 	size_t	s_len;
 
@@ -74,24 +74,24 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		return (ft_strdup(""));
 	if (len > s_len - start)
 		len = s_len - start;
-	substr = malloc(len + 1);
-	if (!substr)
+	res = malloc(len + 1);
+	if (!res)
 		return (NULL);
 	i = 0;
 	while (i < len && s[start + i])
 	{
-		substr[i] = s[start + i];
+		res[i] = s[start + i];
 		i++;
 	}
-	substr[i] = '\0';
-	return (substr);
+	res[i] = '\0';
+	return (res);
 }
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	const size_t	len1 = ft_strlen(s1);
 	const size_t	len2 = ft_strlen(s2);
-	char			*joined;
+	char			*res;
 	size_t			i;
 
 	if (!s1 && !s2)
@@ -100,18 +100,18 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		return (ft_strdup(s2));
 	if (!s2)
 		return (ft_strdup(s1));
-	joined = malloc(len1 + len2 + 1);
-	if (!joined)
+	res = malloc(len1 + len2 + 1);
+	if (!res)
 		return (NULL);
 	i = 0;
 	while (i < len1 || i < len2)
 	{
 		if (i < len1)
-			joined[i] = s1[i];
+			res[i] = s1[i];
 		if (i < len2)
-			joined[len1 + i] = s2[i];
+			res[len1 + i] = s2[i];
 		i++;
 	}
-	joined[len1 + len2] = '\0';
-	return (joined);
+	res[len1 + len2] = '\0';
+	return (res);
 }
