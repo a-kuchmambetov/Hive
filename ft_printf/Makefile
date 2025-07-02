@@ -18,7 +18,7 @@ CFLAGS = -Wall -Wextra -Werror
 SRCDIR = .
 LIBFTDIR = libft
 
-SRCS = ft_printf.c
+SRCS = ft_printf.c ft_printf_utils.c
 
 LIBFT_SRCS = $(LIBFTDIR)/ft_strlen.c \
 			$(LIBFTDIR)/ft_putchar_fd.c \
@@ -74,8 +74,8 @@ fclean: clean
 
 re: fclean all
 
-test: $(NAME)
-	$(CC) -o test_ft_printf test_ft_printf.c ft_printf_utils.c -L. -lftprintf
+test: $(NAME) clean
+	$(CC) $(CFLAGS) -o test_ft_printf test_ft_printf.c ft_printf_utils.c -L. -lftprintf
 	./test_ft_printf
 
 .PHONY: all clean fclean re test
