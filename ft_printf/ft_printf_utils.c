@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_printf_utils.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akuchmam <akuchmam@student.hive.fi>        #+#  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025-07-02 10:19:52 by akuchmam          #+#    #+#             */
+/*   Updated: 2025-07-02 10:19:52 by akuchmam         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "ft_printf.h"
 
@@ -16,13 +27,7 @@ int	ft_putstr(char *s)
 		write(1, "(null)", 6);
 		return (6);
 	}
-	count = 0;
-	while (*s)
-	{
-		write(1, s, 1);
-		s++;
-		count++;
-	}
+	count = write(1, s, ft_strlen(s));
 	return (count);
 }
 
@@ -52,7 +57,7 @@ int	ft_putnbr_unsigned(unsigned long n, char *base)
 	count = 0;
 	base_len = ft_strlen(base);
 	if (n >= (unsigned long)base_len)
-        count += ft_putnbr_unsigned(n / base_len, base);
+		count += ft_putnbr_unsigned(n / base_len, base);
 	count += ft_putchar(base[n % base_len]);
 	return (count);
 }

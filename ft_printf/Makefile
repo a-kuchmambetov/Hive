@@ -58,13 +58,12 @@ LIBFT_SRCS = $(LIBFTDIR)/ft_strlen.c \
 OBJS = $(SRCS:.c=.o)
 LIBFT_OBJS = $(LIBFT_SRCS:.c=.o)
 
+MAIN = curl -O https://raw.githubusercontent.com/a-kuchmambetov/Hive/master/ft_printf/test_ft_printf.c
+
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT_OBJS)
 	ar rcs $(NAME) $(OBJS) $(LIBFT_OBJS)
-
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	rm -f $(OBJS) $(LIBFT_OBJS)
@@ -74,8 +73,14 @@ fclean: clean
 
 re: fclean all
 
-test: $(NAME) clean
-	$(CC) $(CFLAGS) -o test_ft_printf test_ft_printf.c ft_printf_utils.c -L. -lftprintf
-	./test_ft_printf
+getmain:
+	@[ ! -f "test_ft_printf.c" ] && $(MAIN) || true
+compile:
+	$(CC) $(CFLAGS) -o tester test_ft_printf.c libftprintf.a && ./tester
+test: getmain compile clean
+	./tester > res.txt && cat res.txt && rm -f tester
+
+printTester: clean
+	git clone https://github.com/Tripouille/printfTester.git && cd printfTester && make m
 
 .PHONY: all clean fclean re test

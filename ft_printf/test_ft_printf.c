@@ -32,9 +32,9 @@ void	test_character(void)
 	printf("std_printf: ");
 	fflush(stdout);
 	std_ret = printf("Character: %c\n", 'A');
-    ft_ret == std_ret ? ft_printf(GREEN): ft_printf(RED);
-	ft_printf("Return values: ft=%d, std=%d\n\n", ft_ret, std_ret);
-	ft_printf(RESET);
+    ft_ret == std_ret ? printf(GREEN): printf(RED);
+	printf("Return values: ft=%d, std=%d\n\n", ft_ret, std_ret);
+	printf(RESET);
 
 	printf("Test 2: Null character\n");
 	printf("ft_printf: ");

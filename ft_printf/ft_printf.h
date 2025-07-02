@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akuchmam <akuchmam@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: akuchmam <akuchmam@student.hive.fi>        #+#  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-07-01 00:00:00 by akuchmam          #+#    #+#             */
-/*   Updated: 2025-07-01 00:00:00 by akuchmam         ###   ########.fr       */
+/*   Created: 2025-07-02 10:20:08 by akuchmam          #+#    #+#             */
+/*   Updated: 2025-07-02 10:20:08 by akuchmam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

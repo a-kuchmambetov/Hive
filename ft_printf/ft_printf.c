@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akuchmam <akuchmam@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: akuchmam <akuchmam@student.hive.fi>        #+#  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-07-01 00:00:00 by akuchmam          #+#    #+#             */
-/*   Updated: 2025-07-01 00:00:00 by akuchmam         ###   ########.fr       */
+/*   Created: 2025-07-02 10:20:01 by akuchmam          #+#    #+#             */
+/*   Updated: 2025-07-02 10:20:01 by akuchmam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static int	ft_handle_conversion(char c, va_list *args)
+static int	ft_handle_format(char c, va_list *args)
 {
 	if (c == 'c')
 		return (ft_putchar(va_arg(*args, int)));
@@ -25,9 +25,11 @@ static int	ft_handle_conversion(char c, va_list *args)
 	else if (c == 'u')
 		return (ft_putnbr_unsigned(va_arg(*args, unsigned int), "0123456789"));
 	else if (c == 'x')
-		return (ft_putnbr_unsigned(va_arg(*args, unsigned int), "0123456789abcdef"));
+		return (ft_putnbr_unsigned(va_arg(*args, unsigned int),
+				"0123456789abcdef"));
 	else if (c == 'X')
-		return (ft_putnbr_unsigned(va_arg(*args, unsigned int), "0123456789ABCDEF"));
+		return (ft_putnbr_unsigned(va_arg(*args, unsigned int),
+				"0123456789ABCDEF"));
 	else if (c == '%')
 		return (ft_putchar('%'));
 	return (0);
@@ -49,7 +51,7 @@ int	ft_printf(const char *format, ...)
 		if (format[i] == '%' && format[i + 1])
 		{
 			i++;
-			count += ft_handle_conversion(format[i], &args);
+			count += ft_handle_format(format[i], &args);
 		}
 		else if (format[i] != '%')
 			count += ft_putchar(format[i]);
