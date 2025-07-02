@@ -17,59 +17,31 @@ CFLAGS = -Wall -Wextra -Werror
 
 SRCDIR = .
 LIBFTDIR = libft
+LIBFT = $(LIBFTDIR)/libft.a
 
 SRCS = ft_printf.c ft_printf_utils.c
 
-LIBFT_SRCS = $(LIBFTDIR)/ft_strlen.c \
-			$(LIBFTDIR)/ft_putchar_fd.c \
-			$(LIBFTDIR)/ft_putstr_fd.c \
-			$(LIBFTDIR)/ft_putnbr_fd.c \
-			$(LIBFTDIR)/ft_putendl_fd.c \
-			$(LIBFTDIR)/ft_itoa.c \
-			$(LIBFTDIR)/ft_strchr.c \
-			$(LIBFTDIR)/ft_strdup.c \
-			$(LIBFTDIR)/ft_substr.c \
-			$(LIBFTDIR)/ft_strjoin.c \
-			$(LIBFTDIR)/ft_strtrim.c \
-			$(LIBFTDIR)/ft_split.c \
-			$(LIBFTDIR)/ft_strmapi.c \
-			$(LIBFTDIR)/ft_striteri.c \
-			$(LIBFTDIR)/ft_isalpha.c \
-			$(LIBFTDIR)/ft_isdigit.c \
-			$(LIBFTDIR)/ft_isalnum.c \
-			$(LIBFTDIR)/ft_isascii.c \
-			$(LIBFTDIR)/ft_isprint.c \
-			$(LIBFTDIR)/ft_toupper.c \
-			$(LIBFTDIR)/ft_tolower.c \
-			$(LIBFTDIR)/ft_strlcpy.c \
-			$(LIBFTDIR)/ft_strlcat.c \
-			$(LIBFTDIR)/ft_strrchr.c \
-			$(LIBFTDIR)/ft_strncmp.c \
-			$(LIBFTDIR)/ft_strnstr.c \
-			$(LIBFTDIR)/ft_memset.c \
-			$(LIBFTDIR)/ft_memcpy.c \
-			$(LIBFTDIR)/ft_memmove.c \
-			$(LIBFTDIR)/ft_memchr.c \
-			$(LIBFTDIR)/ft_memcmp.c \
-			$(LIBFTDIR)/ft_bzero.c \
-			$(LIBFTDIR)/ft_calloc.c \
-			$(LIBFTDIR)/ft_atoi.c
-
 OBJS = $(SRCS:.c=.o)
-LIBFT_OBJS = $(LIBFT_SRCS:.c=.o)
 
 MAIN = curl -O https://raw.githubusercontent.com/a-kuchmambetov/Hive/master/ft_printf/test_ft_printf.c
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT_OBJS)
-	ar rcs $(NAME) $(OBJS) $(LIBFT_OBJS)
+$(LIBFT):
+	$(MAKE) -C $(LIBFTDIR)
+
+$(NAME): $(LIBFT) $(OBJS)
+	cp $(LIBFT) $(NAME)
+	ar rcs $(NAME) $(OBJS)
 
 clean:
-	rm -f $(OBJS) $(LIBFT_OBJS)
+	rm -f $(OBJS)
+	$(MAKE) -C $(LIBFTDIR) clean
+	$(MAKE) -C $(LIBFTDIR) fclean
 
 fclean: clean
 	rm -f $(NAME)
+	$(MAKE) -C $(LIBFTDIR) fclean
 
 re: fclean all
 
@@ -83,4 +55,4 @@ test: getmain compile clean
 printTester: clean
 	git clone https://github.com/Tripouille/printfTester.git && cd printfTester && make m
 
-.PHONY: all clean fclean re test
+.PHONY: all clean fclean re test getmain compile printTester
