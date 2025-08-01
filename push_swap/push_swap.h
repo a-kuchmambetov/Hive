@@ -25,6 +25,7 @@ typedef struct s_node
 	struct s_node *prev;
 	struct s_node *next;
 } t_node;
+
 // "Stack" List
 typedef struct stack
 {
@@ -34,12 +35,12 @@ typedef struct stack
 
 typedef struct data_ab
 {
-	int index_a;
-	int index_b;
+	int i_a;
+	int i_b;
 	int size_a;
 	int size_b;
-	int direction_a; // 1 for up, -1 for down
-	int direction_b; // 1 for up, -1 for down
+	int dir_a; // 1 for up, -1 for down
+	int dir_b; // 1 for up, -1 for down
 } t_data_ab;
 
 // Stack operations --->
@@ -147,10 +148,9 @@ int big_sort(t_stack *stack_a, t_stack *stack_b);
 
 // Big sort Utility functions --->
 
-int get_future_pos(t_stack *stack_b, int value, int *index);
-t_data_ab get_direction(t_data_ab data);
 int calc_moves_from_data(t_data_ab data, int place_after);
 int count_moves(t_stack *stack_a, t_stack *stack_b, int value);
+int do_moves(t_stack *stack_a, t_stack *stack_b, int value);
 // <--- Big sort Utility functions
 
 #endif

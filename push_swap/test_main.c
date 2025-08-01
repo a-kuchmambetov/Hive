@@ -65,33 +65,33 @@ static int print_stack(t_stack *stack)
 //	return 0;
 //}
 
-#include <stdio.h>
+// #include <stdio.h>
 
-int main(void)
-{
-	t_stack stack_a, stack_b;
-	stack_constructor(&stack_a);
-	stack_constructor(&stack_b);
+// int main(void)
+//{
+//	t_stack stack_a, stack_b;
+//	stack_constructor(&stack_a);
+//	stack_constructor(&stack_b);
 
-	// int numbers[] = {7, 10, -5, -1, -2, -9, 4, -8};
-	// int test[] = {0, -7};
+//	// int numbers[] = {7, 10, -5, -1, -2, -9, 4, -8};
+//	// int test[] = {0, -7};
 
-	int numbers[] = {-3, -9, 4, -2};
-	int test[] = {0, -5, -7, 10, 8, 7};
-	// int test[] = {8, 7, 0, -5, -7, 10};
+//	int numbers[] = {-3, -9, 4, -2};
+//	int test[] = {0, -5, -7, 10, 8, 7};
+//	// int test[] = {8, 7, 0, -5, -7, 10};
 
-	push_arr_to_stack(numbers, 4, &stack_a);
-	push_arr_to_stack(test, 6, &stack_b);
-	printf("Val %d; Current pos a - %d; Moves - %d\n", numbers[0], stack_vi(&stack_a, numbers[0]), count_moves(&stack_a, &stack_b, numbers[0]));
-	printf("Val %d; Current pos a - %d; Moves - %d\n", numbers[1], stack_vi(&stack_a, numbers[1]), count_moves(&stack_a, &stack_b, numbers[1]));
-	printf("Val %d; Current pos a - %d; Moves - %d\n", numbers[2], stack_vi(&stack_a, numbers[2]), count_moves(&stack_a, &stack_b, numbers[2]));
-	printf("Val %d; Current pos a - %d; Moves - %d\n", numbers[3], stack_vi(&stack_a, numbers[3]), count_moves(&stack_a, &stack_b, numbers[3]));
-	// big_sort(&stack_a, &stack_b);
-	print_stack(&stack_a);
-	print_stack(&stack_b);
+//	push_arr_to_stack(numbers, 4, &stack_a);
+//	push_arr_to_stack(test, 6, &stack_b);
+//	printf("Val %d; Current pos a - %d; Moves - %d\n", numbers[0], stack_vi(&stack_a, numbers[0]), count_moves(&stack_a, &stack_b, numbers[0]));
+//	printf("Val %d; Current pos a - %d; Moves - %d\n", numbers[1], stack_vi(&stack_a, numbers[1]), count_moves(&stack_a, &stack_b, numbers[1]));
+//	printf("Val %d; Current pos a - %d; Moves - %d\n", numbers[2], stack_vi(&stack_a, numbers[2]), count_moves(&stack_a, &stack_b, numbers[2]));
+//	printf("Val %d; Current pos a - %d; Moves - %d\n", numbers[3], stack_vi(&stack_a, numbers[3]), count_moves(&stack_a, &stack_b, numbers[3]));
+//	// big_sort(&stack_a, &stack_b);
+//	print_stack(&stack_a);
+//	print_stack(&stack_b);
 
-	return 0;
-}
+//	return 0;
+//}
 
 // {-3, -9, 4, -2};
 // {0, -5, -7, 10, 8, 7};
@@ -107,3 +107,33 @@ int main(void)
 
 // 4 op{4, -2};
 // {-9, 10, 8, 7};
+
+#include <stdio.h>
+
+int main(void)
+{
+	t_stack stack_a, stack_b;
+	stack_constructor(&stack_a);
+	stack_constructor(&stack_b);
+
+	// int numbers[] = {7, 10, -5, -1, -2, -9, 4, -8};
+	// int test[] = {0, -7};
+
+	int numbers[] = {-3, -9, 4, -2, -20, 15};
+	int test[] = {10, 8, 7, 0, -5, -7};
+	// int test[] = {8, 7, 0, -5, -7, 10};
+
+	push_arr_to_stack(numbers, 6, &stack_a);
+	push_arr_to_stack(test, 6, &stack_b);
+	// Before doing moves
+	print_stack(&stack_a);
+	print_stack(&stack_b);
+	int number = numbers[4];
+	printf("\nVal %d; Moves - %d\n", number, count_moves(&stack_a, &stack_b, number));
+	do_moves(&stack_a, &stack_b, number);
+	// After doing moves
+	print_stack(&stack_a);
+	print_stack(&stack_b);
+
+	return 0;
+}

@@ -14,8 +14,8 @@
 
 static int pw_r(t_stack *stack_a)
 {
-	t_node	*first;
-	t_node	*last;
+	t_node *first;
+	t_node *last;
 
 	if (!stack_a || !stack_a->top || !stack_a->top->next)
 		return (0);
@@ -32,7 +32,7 @@ static int pw_r(t_stack *stack_a)
 
 int pw_ra(t_stack *stack_a)
 {
-	const int	res = pw_r(stack_a);
+	const int res = pw_r(stack_a);
 
 	if (res == 1)
 		ft_putstr_fd("ra\n", 1);
@@ -41,7 +41,7 @@ int pw_ra(t_stack *stack_a)
 
 int pw_rb(t_stack *stack_b)
 {
-	const int	res = pw_r(stack_b);
+	const int res = pw_r(stack_b);
 
 	if (res == 1)
 		ft_putstr_fd("rb\n", 1);
@@ -50,13 +50,13 @@ int pw_rb(t_stack *stack_b)
 
 int pw_rr(t_stack *stack_a, t_stack *stack_b)
 {
-	int	result_a;
-	int	result_b;
+	int result_a;
+	int result_b;
 
 	if (!stack_a || !stack_b || !stack_a->top || !stack_b->top)
 		return (0);
-	result_a = pw_ra(stack_a);
-	result_b = pw_rb(stack_b);
+	result_a = pw_r(stack_a);
+	result_b = pw_r(stack_b);
 	if (result_a && result_b)
 	{
 		ft_putstr_fd("rr\n", 1);

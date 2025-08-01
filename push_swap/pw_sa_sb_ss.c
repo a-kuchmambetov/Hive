@@ -57,8 +57,8 @@ int pw_ss(t_stack *stack_a, t_stack *stack_b)
 
 	if (!stack_a || !stack_b || !stack_a->top || !stack_b->top)
 		return (0);
-	result_a = pw_sa(stack_a);
-	result_b = pw_sb(stack_b);
+	result_a = pw_s(stack_a);
+	result_b = pw_s(stack_b);
 	if (result_a && result_b)
 	{
 		ft_putstr_fd("ss\n", 1);
