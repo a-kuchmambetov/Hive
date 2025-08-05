@@ -1,0 +1,2 @@
+ARG="1300 19515 47637 23522 31827 "; ./push_swap $ARG | wc -l
+ARG="1300 19515 47637 23522 31827 "; ./push_swap $ARG | ./checker_linux $ARG

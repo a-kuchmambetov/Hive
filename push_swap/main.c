@@ -12,20 +12,25 @@
 
 #include "push_swap.h"
 
-static int push_arr_to_stack(int arr[], int size, t_stack *stack)
+static int	push_arr_to_stack(int arr[], int size, t_stack *stack)
 {
-	int i;
+	int	i;
+
 	if (!stack || size <= 0)
 		return (0);
-	for (i = 0; i < size; i++)
+	i = 0;
+	while (i < size)
+	{
 		if (!stack_push(stack, arr[i]))
 			return (0);
+		i++;
+	}
 	return (1);
 }
 
-static int sorted(t_stack *stack)
+static int	sorted(t_stack *stack)
 {
-	t_node *current;
+	t_node	*current;
 
 	if (!stack || !stack->top)
 		return (1);
@@ -39,27 +44,32 @@ static int sorted(t_stack *stack)
 	return (1);
 }
 
-static int has_duplicates(int arr[], int size)
+static int	has_duplicates(int arr[], int size)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	if (!arr || size <= 1)
 		return (0);
-	for (i = 0; i < size - 1; i++)
+	i = 0;
+	j = 0;
+	while (i < size)
 	{
-		for (j = i + 1; j < size; j++)
+		j = i + 1;
+		while (j < size)
 		{
 			if (arr[i] == arr[j])
 				return (1);
+			j++;
 		}
+		i++;
 	}
 	return (0);
 }
 
-static void sort_stack(t_stack *stack_a, t_stack *stack_b)
+static void	sort_stack(t_stack *stack_a, t_stack *stack_b)
 {
-	const int size_stack_a = stack_size(stack_a);
+	const int	size_stack_a = stack_size(stack_a);
 
 	if (!sorted(stack_a))
 	{
@@ -75,11 +85,14 @@ static void sort_stack(t_stack *stack_a, t_stack *stack_b)
 	}
 }
 
-int main(int argc, char *argv[])
+// Wrong case 212 78 323 434 454 115 701 315 926 749
+
+int	main(int argc, char *argv[])
 {
-	t_stack stack_a, stack_b;
-	int *numbers;
-	int count;
+	t_stack	stack_a;
+	t_stack	stack_b;
+	int		*numbers;
+	int		count;
 
 	if (argc < 2)
 	{
@@ -101,5 +114,4 @@ int main(int argc, char *argv[])
 	free(numbers);
 	stack_destructor(&stack_a);
 	stack_destructor(&stack_b);
-	return (0);
 }

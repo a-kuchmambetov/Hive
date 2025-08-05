@@ -12,7 +12,7 @@
 
 #include "push_swap.h"
 
-int stack_constructor(t_stack *stack)
+int	stack_constructor(t_stack *stack)
 {
 	if (!stack)
 		return (0);
@@ -21,10 +21,10 @@ int stack_constructor(t_stack *stack)
 	return (1);
 }
 
-int stack_destructor(t_stack *stack)
+int	stack_destructor(t_stack *stack)
 {
-	t_node *current;
-	t_node *next;
+	t_node	*current;
+	t_node	*next;
 
 	if (!stack || !stack->top)
 		return (0);
@@ -40,9 +40,9 @@ int stack_destructor(t_stack *stack)
 	return (1);
 }
 
-int stack_push(t_stack *stack, int value)
+int	stack_push(t_stack *stack, int value)
 {
-	t_node *new_node;
+	t_node	*new_node;
 
 	if (!stack)
 		return (0);
@@ -66,9 +66,9 @@ int stack_push(t_stack *stack, int value)
 	return (1);
 }
 
-int stack_set_btm(t_stack *stack)
+int	stack_set_btm(t_stack *stack)
 {
-	t_node *current;
+	t_node	*current;
 
 	if (!stack || !stack->top)
 		return (0);
@@ -86,8 +86,8 @@ int stack_set_btm(t_stack *stack)
 
 int	stack_size(t_stack *stack)
 {
-	int size;
-	t_node *current;
+	int		size;
+	t_node	*current;
 
 	if (!stack || !stack->top)
 		return (0);

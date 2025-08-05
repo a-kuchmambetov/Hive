@@ -67,6 +67,7 @@ static void	free_numbers_array(char **numbers_str, int argc)
 		free(numbers_str);
 	}
 }
+
 static int	*count_and_calloc_numbers(char **numbers_str, int *count)
 {
 	int	*numbers;
@@ -90,7 +91,7 @@ int	*parse_input(int argc, char *argv[], int *count)
 	char	**numbers_str;
 	int		*numbers;
 	int		i;
-	
+
 	numbers_str = get_numbers_array(argc, argv);
 	if (!numbers_str)
 		return (NULL);

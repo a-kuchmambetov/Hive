@@ -29,7 +29,7 @@ int	is_in_int_range(char *str)
 	while (str[i])
 	{
 		num = num * 10 + (str[i] - '0');
-		if ((sign == 1 && num > INT_MAX) || (sign == -1 && -num < INT_MIN))
+		if ((sign == 1 && num > INT_MAX) || (sign == -1 && (-num < INT_MIN)))
 			return (0);
 		i++;
 	}

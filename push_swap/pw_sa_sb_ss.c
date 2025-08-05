@@ -12,10 +12,10 @@
 
 #include "push_swap.h"
 
-static int pw_s(t_stack *stack_a)
+static int	pw_s(t_stack *stack_a)
 {
-	t_node *first;
-	t_node *second;
+	t_node	*first;
+	t_node	*second;
 
 	if (!stack_a || !stack_a->top || !stack_a->top->next)
 		return (0);
@@ -32,28 +32,28 @@ static int pw_s(t_stack *stack_a)
 	return (1);
 }
 
-int pw_sa(t_stack *stack_a)
+int	pw_sa(t_stack *stack_a)
 {
-	const int res = pw_s(stack_a);
+	const int	res = pw_s(stack_a);
 
 	if (res == 1)
 		ft_putstr_fd("sa\n", 1);
 	return (res);
 }
 
-int pw_sb(t_stack *stack_b)
+int	pw_sb(t_stack *stack_b)
 {
-	const int res = pw_s(stack_b);
+	const int	res = pw_s(stack_b);
 
 	if (res == 1)
 		ft_putstr_fd("sb\n", 1);
 	return (res);
 }
 
-int pw_ss(t_stack *stack_a, t_stack *stack_b)
+int	pw_ss(t_stack *stack_a, t_stack *stack_b)
 {
-	int result_a;
-	int result_b;
+	int	result_a;
+	int	result_b;
 
 	if (!stack_a || !stack_b || !stack_a->top || !stack_b->top)
 		return (0);
