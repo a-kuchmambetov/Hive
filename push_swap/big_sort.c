@@ -12,12 +12,12 @@
 
 #include "push_swap.h"
 
-static int	find_val_to_move(t_stack *stack_a, t_stack *stack_b)
+static int find_val_to_move(t_stack *stack_a, t_stack *stack_b)
 {
-	int		best_moves;
-	int		current_moves;
-	int		best_index;
-	t_node	*current;
+	int best_moves;
+	int current_moves;
+	int best_index;
+	t_node *current;
 
 	current = stack_a->top;
 	current_moves = INT_MAX;
@@ -36,32 +36,33 @@ static int	find_val_to_move(t_stack *stack_a, t_stack *stack_b)
 	return (best_index);
 }
 
-static void	move_from_b_to_a(t_stack *stack_a, t_stack *stack_b)
+static void move_from_b_to_a(t_stack *stack_a, t_stack *stack_b)
 {
-	t_node	*current;
-	int		place_after_v;
+	int place_a_v;
+	int place_b_v;
+	int counter;
 
-	current = stack_b->top;
-	place_after_v = 0;
+	counter = 0;
+	place_a_v = 0;
 	while (stack_size(stack_b) > 0)
 	{
-		place_after_v = value_closest_biggest(stack_a, stack_a->bottom->value);
-		if (stack_a->bottom->value > current->value
-			&& place_after_v == stack_a->top->value)
+		place_a_v = value_closest_smallest(stack_a, stack_a->bottom->value);
+		place_b_v = value_closest_smallest(stack_b, stack_a->bottom->value);
+		if (((place_a_v > place_b_v) || (stack_a->bottom->value > stack_b->top->value)) && counter < 3)
 		{
 			pw_rra(stack_a);
-			continue ;
+			counter++;
+			continue;
 		}
 		pw_pa(stack_a, stack_b);
-		current = stack_b->top;
 	}
-	while (stack_a->top->value > stack_a->bottom->value)
-		pw_rra(stack_a);
+	// while (stack_a->top->value > stack_a->bottom->value)
+	// 	pw_rra(stack_a);
 }
 
-int	big_sort(t_stack *stack_a, t_stack *stack_b)
+int big_sort(t_stack *stack_a, t_stack *stack_b)
 {
-	int	val_i;
+	int val_i;
 
 	if (!stack_a || !stack_b)
 		return (0);
@@ -92,10 +93,10 @@ place_after - 1 place after found index; when there are no closest smaller
 number, to prevent wrong behavior of direction and calc_moves_from_data
 functions. P.S Only when index != 0;
 */
-int	get_future_pos(t_stack *stack_b, int value, int *index)
+int get_future_pos(t_stack *stack_b, int value, int *index)
 {
-	int	res;
-	int	place_after;
+	int res;
+	int place_after;
 
 	place_after = 0;
 	res = value_closest_smallest(stack_b, value);
@@ -113,9 +114,9 @@ int	get_future_pos(t_stack *stack_b, int value, int *index)
 	return (place_after);
 }
 
-t_data_ab	get_direction(t_data_ab data)
+t_data_ab get_direction(t_data_ab data)
 {
-	t_data_ab	result;
+	t_data_ab result;
 
 	result.i_a = data.i_a;
 	result.i_b = data.i_b;
