@@ -59,8 +59,8 @@ int stack_set_btm(t_stack *stack);
 /// @return Returns size of the stack, or 0 if stack is NULL.
 int stack_size(t_stack *stack);
 
-int stack_vi(t_stack *stack, int value);
-int stack_vi_btm(t_stack *stack, int value);
+int stack_i_of_v(t_stack *stack, int value);
+int stack_v_by_i(t_stack *stack, int index);
 // <--- Stack operations
 
 // Swap ops --->
@@ -148,7 +148,10 @@ int big_sort(t_stack *stack_a, t_stack *stack_b);
 
 // Big sort Utility functions --->
 
-int calc_moves_from_data(t_data_ab data, int place_after);
+int value_closest_smallest(t_stack *stack_b, int value);
+int value_closest_biggest(t_stack *stack_b, int value);
+int get_future_pos(t_stack *stack_b, int value, int *i_b);
+t_data_ab get_direction(t_data_ab data);
 int count_moves(t_stack *stack_a, t_stack *stack_b, int value);
 int do_moves(t_stack *stack_a, t_stack *stack_b, int value);
 // <--- Big sort Utility functions

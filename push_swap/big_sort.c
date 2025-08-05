@@ -12,69 +12,101 @@
 
 #include "push_swap.h"
 
-int big_sort(t_stack *stack_a, t_stack *stack_b);
-
-static int index_closest_smallest(t_stack *stack_b, int value)
+static int find_val_to_move(t_stack *stack_a, t_stack *stack_b)
 {
+	int best_moves;
+	int current_moves;
+	int best_index;
 	t_node *current;
-	int res;
 
-	if (!stack_b || !stack_b->top)
-		return (0);
-	current = stack_b->top;
-	res = INT_MIN;
+	current = stack_a->top;
+	current_moves = INT_MAX;
+	best_moves = INT_MAX;
+	best_index = INT_MAX;
 	while (current)
 	{
-		if (current->value < value && current->value > res)
-			res = current->value;
+		current_moves = count_moves(stack_a, stack_b, current->value);
+		if (current_moves < best_moves)
+		{
+			best_moves = current_moves;
+			best_index = stack_i_of_v(stack_a, current->value);
+		}
 		current = current->next;
 	}
-	return (res);
+	return (best_index);
 }
 
-static int index_closest_biggest(t_stack *stack_b, int value)
+static void move_from_b_to_a(t_stack *stack_a, t_stack *stack_b)
 {
 	t_node *current;
-	int res;
+	int place_after_val;
 
-	if (!stack_b || !stack_b->top)
-		return (0);
 	current = stack_b->top;
-	res = INT_MAX;
-	while (current)
+	place_after_val = 0;
+	while (stack_size(stack_b) > 0)
 	{
-		if (current->value > value && current->value < res)
-			res = current->value;
-		current = current->next;
+		place_after_val = value_closest_biggest(stack_a, stack_a->bottom->value);
+		if (stack_a->bottom->value > current->value && place_after_val == stack_a->top->value)
+		{
+			pw_rra(stack_a);
+			continue;
+		}
+		pw_pa(stack_a, stack_b);
+		current = stack_b->top;
 	}
-	return (res);
+	while (stack_a->top->value > stack_a->bottom->value)
+		pw_rra(stack_a);
+}
+
+int big_sort(t_stack *stack_a, t_stack *stack_b)
+{
+	int val_i;
+
+	if (!stack_a || !stack_b)
+		return (0);
+	pw_pb(stack_a, stack_b);
+	pw_pb(stack_a, stack_b);
+	while (stack_size(stack_a) > 3)
+	{
+		val_i = find_val_to_move(stack_a, stack_b);
+		do_moves(stack_a, stack_b, stack_v_by_i(stack_a, val_i));
+	}
+	tiny_sort(stack_a);
+	while (stack_b->top->value < stack_b->bottom->value)
+	{
+		if (value_closest_smallest(stack_b, INT_MAX) > stack_size(stack_b) / 2)
+			pw_rb(stack_b);
+		else
+			pw_rrb(stack_b);
+	}
+	move_from_b_to_a(stack_a, stack_b);
+	return (1);
 }
 
 // place_after - 0 don't place after found index;
 // place_after - 1 place after found index; when there are no closest smaller number, to prevent wrong behavior of direction and calc_moves_from_data functions. P.S Only when index != 0;
-static int get_future_pos(t_stack *stack_b, int value, int *index)
+int get_future_pos(t_stack *stack_b, int value, int *index)
 {
 	int res;
 	int place_after;
 
 	place_after = 0;
-	res = index_closest_smallest(stack_b, value);
-	*index = stack_vi(stack_b, res);
+	res = value_closest_smallest(stack_b, value);
+	*index = stack_i_of_v(stack_b, res);
 	if (res == INT_MIN)
 	{
-		res = index_closest_biggest(stack_b, value);
-		if (res > stack_size(stack_b) || res == INT_MAX)
+		res = value_closest_biggest(stack_b, value);
+		*index = stack_i_of_v(stack_b, res);
+		if (*index > stack_size(stack_b) || res == INT_MAX)
 			*index = 0;
 		else
-		{
-			place_after = 1;
-			*index = stack_vi(stack_b, res) + 1;
-		}
+			*index = stack_i_of_v(stack_b, res) + 1;
+		place_after = 1;
 	}
 	return (place_after);
 }
 
-static t_data_ab get_direction(t_data_ab data)
+t_data_ab get_direction(t_data_ab data)
 {
 	t_data_ab result;
 
@@ -90,159 +122,5 @@ static t_data_ab get_direction(t_data_ab data)
 		result.dir_b = 1;
 	else
 		result.dir_b = -1;
-	return (result);
-}
-
-int calc_moves_from_data(t_data_ab data, int place_after)
-{
-	int moves;
-
-	if (data.dir_a == 1 && data.dir_b == 1)
-	{
-		if (data.i_a > data.i_b)
-			moves = data.i_a - data.i_b;
-		else
-			moves = data.i_b - data.i_a;
-	}
-	else if (data.dir_a == -1 && data.dir_b == -1)
-	{
-		if ((data.size_a - data.i_a) > (data.size_b - data.i_b))
-			moves = (data.size_a - data.i_a) - (data.size_b - data.i_b);
-		else
-			moves = (data.size_b - data.i_b) - (data.size_a - data.i_a);
-	}
-	else if (data.dir_a == 1 && data.dir_b == -1)
-		moves = data.i_a + (data.size_b - data.i_b);
-	else
-		moves = (data.size_a - data.i_a) + data.i_b;
-	if (place_after)
-		return (moves + 1);
-	return (moves + 1);
-}
-
-int count_moves(t_stack *stack_a, t_stack *stack_b, int value)
-{
-	t_data_ab data;
-	int place_after;
-	int result;
-
-	if (!stack_a || !stack_b || !stack_a->top || !stack_b->top)
-		return (-1);
-	data.i_a = stack_vi(stack_a, value);
-	place_after = get_future_pos(stack_b, value, &data.i_b);
-	data.size_a = stack_size(stack_a);
-	data.size_b = stack_size(stack_b);
-	data = get_direction(data);
-	result = calc_moves_from_data(data, place_after);
-	return (result);
-}
-
-static int do_r_dif(t_data_ab data, t_stack *stack_a, t_stack *stack_b)
-{
-	const int diff[2] = {data.size_a - data.i_a, data.size_b - data.i_b};
-	int i;
-
-	if (data.dir_a == 1 && data.dir_b == -1)
-	{
-		i = 0;
-		while (i++ < data.i_a)
-			pw_ra(stack_a);
-		i = 0;
-		while (i++ < diff[1])
-			pw_rrb(stack_b);
-	}
-	else if (data.dir_a == -1 && data.dir_b == 1)
-	{
-		i = 0;
-		while (i++ < diff[0])
-			pw_rra(stack_a);
-		i = 0;
-		while (i++ < data.i_b)
-			pw_rb(stack_b);
-	}
-	return (0);
-}
-
-static int do_r_up(t_data_ab data, t_stack *stack_a, t_stack *stack_b)
-{
-	const int ra_times = data.i_a;
-	const int rb_times = data.i_b;
-	int rr_times;
-	int i;
-
-	rr_times = 0;
-	if (data.i_a != 0 && data.i_b != 0)
-	{
-		if (data.i_a > data.i_b)
-			rr_times = data.i_b;
-		else if (data.i_a < data.i_b)
-			rr_times = data.i_a;
-	}
-	i = 0;
-	while (i++ < rr_times)
-		pw_rr(stack_a, stack_b);
-	i = 0;
-	while (i++ < ra_times - rr_times)
-		pw_ra(stack_a);
-	i = 0;
-	while (i++ < rb_times - rr_times)
-		pw_rb(stack_b);
-	return (0);
-}
-
-static int do_r_down(t_data_ab data, t_stack *stack_a,
-					 t_stack *stack_b)
-{
-	const int diff[2] = {data.size_a - data.i_a, data.size_b - data.i_b};
-	int rr_times;
-	int i;
-
-	rr_times = 0;
-	if (diff[0] != 0 && diff[1] != 0)
-	{
-		if (diff[0] > diff[1])
-			rr_times = diff[1];
-		else if (diff[0] < diff[1])
-			rr_times = diff[0];
-	}
-	i = 0;
-	while (i++ < rr_times)
-		pw_rrr(stack_a, stack_b);
-	i = 0;
-	while (i++ < diff[0] - rr_times)
-		pw_rra(stack_a);
-	i = 0;
-	while (i++ < diff[1] - rr_times)
-		pw_rrb(stack_b);
-	return (0);
-}
-
-static int do_moves_from_data(t_data_ab data, int place_after, t_stack *stack_a,
-							  t_stack *stack_b)
-{
-	(void)place_after;
-	if (data.dir_a == 1 && data.dir_b == 1)
-		do_r_up(data, stack_a, stack_b);
-	else if (data.dir_a == -1 && data.dir_b == -1)
-		do_r_down(data, stack_a, stack_b);
-	else
-		do_r_dif(data, stack_a, stack_b);
-	return (1);
-}
-
-int do_moves(t_stack *stack_a, t_stack *stack_b, int value)
-{
-	t_data_ab data;
-	int place_after;
-	int result;
-
-	if (!stack_a || !stack_b || !stack_a->top || !stack_b->top)
-		return (-1);
-	data.i_a = stack_vi(stack_a, value);
-	place_after = get_future_pos(stack_b, value, &data.i_b);
-	data.size_a = stack_size(stack_a);
-	data.size_b = stack_size(stack_b);
-	data = get_direction(data);
-	result = do_moves_from_data(data, place_after, stack_a, stack_b);
 	return (result);
 }

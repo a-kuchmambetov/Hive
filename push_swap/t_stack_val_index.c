@@ -13,7 +13,7 @@
 #include "push_swap.h"
 
 // Get index of a value in the stack from the top.
-int stack_vi(t_stack *stack, int value)
+int stack_i_of_v(t_stack *stack, int value)
 {
 	t_node *current;
 	int index;
@@ -33,21 +33,21 @@ int stack_vi(t_stack *stack, int value)
 }
 
 // Get index of a value in the stack from the bottom.
-int stack_vi_btm(t_stack *stack, int value)
+int stack_v_by_i(t_stack *stack, int index)
 {
 	t_node *current;
-	int index;
+	int iterator;
 
 	if (!stack || !stack->bottom)
 		return (-1);
-	current = stack->bottom;
-	index = 0;
-	while (current)
+	current = stack->top;
+	iterator = 0;
+	while (iterator < stack_size(stack) && current)
 	{
-		if (current->value == value)
-			return (index);
-		current = current->prev;
-		index++;
+		if (iterator == index)
+			return (current->value);
+		current = current->next;
+		iterator++;
 	}
 	return (-1); // Value not found
 }
