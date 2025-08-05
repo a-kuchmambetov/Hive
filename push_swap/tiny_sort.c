@@ -47,9 +47,11 @@ int tiny_sort(t_stack *stack_a)
 	}
 	else if (size == 3)
 	{
-		if (stack_gvtop(stack_a) > stack_gvtop_next(stack_a) && stack_gvtop(stack_a) > stack_gvbot(stack_a))
+		if (stack_gvtop(stack_a) > stack_gvtop_next(stack_a) &&
+			stack_gvtop(stack_a) > stack_gvbot(stack_a))
 			pw_ra(stack_a);
-		else if (stack_gvtop_next(stack_a) > stack_gvtop(stack_a) && stack_gvtop_next(stack_a) > stack_gvbot(stack_a))
+		else if (stack_gvtop_next(stack_a) > stack_gvtop(stack_a) &&
+			stack_gvtop_next(stack_a) > stack_gvbot(stack_a))
 			pw_rra(stack_a);
 		if (stack_gvtop(stack_a) > stack_gvtop_next(stack_a))
 			pw_sa(stack_a);

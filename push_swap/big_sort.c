@@ -64,8 +64,11 @@ int big_sort(t_stack *stack_a, t_stack *stack_b)
 
 	if (!stack_a || !stack_b)
 		return (0);
-	pw_pb(stack_a, stack_b);
-	pw_pb(stack_a, stack_b);
+	if (stack_size(stack_a) >= 5)
+	{
+		pw_pb(stack_a, stack_b);
+		pw_pb(stack_a, stack_b);
+	}
 	while (stack_size(stack_a) > 3)
 	{
 		val_i = find_val_to_move(stack_a, stack_b);
