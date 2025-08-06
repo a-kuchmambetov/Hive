@@ -46,4 +46,17 @@ re: fclean all
 debug: CFLAGS += -g
 debug: all clean
 
+testprep: all clean
+	curl -O https://raw.githubusercontent.com/a-kuchmambetov/Hive/main/Testers/push_swap/checker_linux
+	curl -O https://raw.githubusercontent.com/a-kuchmambetov/Hive/main/Testers/push_swap/test_main.c
+	curl -O https://raw.githubusercontent.com/a-kuchmambetov/Hive/main/Testers/push_swap/test_push_swap.sh
+	curl -O https://raw.githubusercontent.com/a-kuchmambetov/Hive/main/Testers/push_swap/test_random_push_swap.sh
+	chmod +x checker_linux test_push_swap.sh test_random_push_swap.sh
+
+test100:
+	./test_random_push_swap.sh -c 500 -r 50
+
+test500:
+	./test_random_push_swap.sh -c 500 -r 50
+
 .PHONY: all clean fclean re debug
