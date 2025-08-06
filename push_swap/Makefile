@@ -19,7 +19,7 @@ SRCDIR = .
 LIBFTDIR = libft
 LIBFT = $(LIBFTDIR)/libft.a
 
-SRCS = main.c parse_input.c parse_input_utils.c t_stack.c t_stack_val_index.c \
+SRCS = main.c parse_input.c t_stack.c t_stack_val_index.c \
        pw_sa_sb_ss.c pw_pa_pb.c pw_ra_rb_rr.c pw_rra_rrb_rrr.c \
        tiny_sort.c big_sort.c big_sort_count_moves_utils.c big_sort_do_moves_utils.c
 

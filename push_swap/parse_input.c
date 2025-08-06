@@ -61,16 +61,16 @@ int *parse_input(int argc, char *argv[])
 	int *numbers;
 	int i;
 
-	numbers = ft_calloc(sizeof(int), argc);
+	numbers = ft_calloc(sizeof(int), argc - 1);
 	if (!numbers)
 		return (NULL);
 	i = 0;
-	while (i < argc && is_valid_number(argv[i]))
+	while (i < argc - 1 && is_valid_number(argv[i + 1]))
 	{
-		numbers[i] = ft_atoi(argv[i]);
+		numbers[i] = ft_atoi(argv[i + 1]);
 		i++;
 	}
-	if (i < argc)
+	if (i < argc - 1)
 	{
 		free(numbers);
 		return (NULL);

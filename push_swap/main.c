@@ -87,17 +87,19 @@ static void	sort_stack(t_stack *stack_a, t_stack *stack_b)
 
 // Wrong case 212 78 323 434 454 115 701 315 926 749
 
+
 int	main(int argc, char *argv[])
 {
 	t_stack	stack_a;
 	t_stack	stack_b;
 	int		*numbers;
-	int		count;
+	int		num_len;
 
 	if (argc < 2)
 		return (1);
-	numbers = parse_input(argc, argv, &count);
-	if (!numbers || has_duplicates(numbers, count))
+	numbers = parse_input(argc, argv);
+	num_len = argc - 1;
+	if (!numbers || has_duplicates(numbers, num_len))
 	{
 		ft_putstr_fd("Error\n", 2);
 		if (numbers)
@@ -106,7 +108,7 @@ int	main(int argc, char *argv[])
 	}
 	stack_constructor(&stack_a);
 	stack_constructor(&stack_b);
-	push_arr_to_stack(numbers, count, &stack_a);
+	push_arr_to_stack(numbers, num_len, &stack_a);
 	sort_stack(&stack_a, &stack_b);
 	free(numbers);
 	stack_destructor(&stack_a);

@@ -47,7 +47,7 @@ t_data_ab	get_direction(t_data_ab data);
 
 // Input parsing functions --->
 
-int			*parse_input(int argc, char *argv[], int *count);
+int			*parse_input(int argc, char *argv[]);
 
 // <--- Input parsing functions
 
