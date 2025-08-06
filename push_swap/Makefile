@@ -54,9 +54,13 @@ testprep: all clean
 	chmod +x checker_linux test_push_swap.sh test_random_push_swap.sh
 
 test100:
-	./test_random_push_swap.sh -c 500 -r 50
+	./test_random_push_swap.sh -c 100 -r 50
 
 test500:
-	./test_random_push_swap.sh -c 500 -r 50
+	./test_random_push_swap.sh -c 500 -r 20
 
-.PHONY: all clean fclean re debug
+testclean: fclean
+	rm -f checker_linux test_main.c test_push_swap.sh test_random_push_swap.sh
+	rm -f test_main.o test_push_swap.o
+
+.PHONY: all clean fclean re debug testprep test100 test500 testclean
