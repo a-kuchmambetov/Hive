@@ -53,11 +53,11 @@ gitTester: debug
 	cp push_swap Push-Swap-Tester/
 	bash ./Push-Swap-Tester/push_swap_test_linux.sh
 
-gitTester: fclean
+gitTesterClean: fclean
 	rm -rf Push-Swap-Tester
 	rm -f checker_linux 0 traces.txt
 
-testprep: all clean
+testPrep: all clean
 	curl -O https://raw.githubusercontent.com/a-kuchmambetov/Hive/main/Testers/push_swap/checker_linux
 	curl -O https://raw.githubusercontent.com/a-kuchmambetov/Hive/main/Testers/push_swap/test_main.c
 	curl -O https://raw.githubusercontent.com/a-kuchmambetov/Hive/main/Testers/push_swap/test_push_swap.sh
@@ -70,8 +70,8 @@ test100:
 test500:
 	./test_random_push_swap.sh -c 500 -r 20
 
-testclean: fclean
+testClean: fclean
 	rm -f checker_linux test_main.c test_push_swap.sh test_random_push_swap.sh
 	rm -f test_main.o test_push_swap.o
 
-.PHONY: all clean fclean re debug testprep test100 test500 testclean
+.PHONY: all clean fclean re debug testPrep test100 test500 testClean
