@@ -55,7 +55,7 @@ gitTester: debug
 
 gitTester: fclean
 	rm -rf Push-Swap-Tester
-	rm -f checker_linux 0
+	rm -f checker_linux 0 traces.txt
 
 testprep: all clean
 	curl -O https://raw.githubusercontent.com/a-kuchmambetov/Hive/main/Testers/push_swap/checker_linux
