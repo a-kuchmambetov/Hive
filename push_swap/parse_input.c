@@ -12,9 +12,33 @@
 
 #include "push_swap.h"
 
-static int	is_valid_number(char *str)
+static int is_in_int_range(char *str)
 {
-	int	i;
+	long num;
+	int sign;
+	int i;
+
+	i = 0;
+	sign = 1;
+	num = 0;
+	if (str[i] == '-')
+	{
+		sign = -1;
+		i++;
+	}
+	while (str[i])
+	{
+		num = num * 10 + (str[i] - '0');
+		if ((sign == 1 && num > INT_MAX) || (sign == -1 && (-num < INT_MIN)))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+static int is_valid_number(char *str)
+{
+	int i;
 
 	if (!str || !*str)
 		return (0);
@@ -32,86 +56,24 @@ static int	is_valid_number(char *str)
 	return (is_in_int_range(str));
 }
 
-static char	**get_numbers_array(int argc, char *argv[])
+int *parse_input(int argc, char *argv[])
 {
-	char	**numbers;
-	int		i;
+	int *numbers;
+	int i;
 
-	if (argc == 2)
-		numbers = ft_split(argv[1], ' ');
-	else
-	{
-		numbers = ft_calloc(argc, sizeof(char *));
-		if (!numbers)
-			return (NULL);
-		i = 1;
-		while (i < argc)
-		{
-			numbers[i - 1] = argv[i];
-			i++;
-		}
-		numbers[i - 1] = NULL;
-	}
-	return (numbers);
-}
-
-static void	free_numbers_array(char **numbers_str, int argc)
-{
-	int	i;
-
-	if (argc == 2)
-	{
-		i = 0;
-		while (numbers_str[i])
-			free(numbers_str[i++]);
-		free(numbers_str);
-	}
-}
-
-static int	*count_and_calloc_numbers(char **numbers_str, int *count, int argc)
-{
-	int	*numbers;
-	int	i;
-
+	numbers = ft_calloc(sizeof(int), argc);
+	if (!numbers)
+		return (NULL);
 	i = 0;
-	while (numbers_str[i])
+	while (i < argc && is_valid_number(argv[i]))
+	{
+		numbers[i] = ft_atoi(argv[i]);
 		i++;
-	if (i == 0)
-	{
-		free_numbers_array(numbers_str, argc);
-		return (NULL);
 	}
-	*count = i;
-	numbers = ft_calloc(*count, sizeof(int));
-	if (!numbers)
-	{
-		free_numbers_array(numbers_str, argc);
-		return (NULL);
-	}
-	return (numbers);
-}
-
-int	*parse_input(int argc, char *argv[], int *count)
-{
-	char	**numbers_str;
-	int		*numbers;
-	int		i;
-
-	numbers_str = get_numbers_array(argc, argv);
-	if (!numbers_str)
-		return (NULL);
-	numbers = count_and_calloc_numbers(numbers_str, count, argc);
-	if (!numbers)
-		return (NULL);
-	i = -1;
-	while (++i < *count && is_valid_number(numbers_str[i]))
-		numbers[i] = ft_atoi(numbers_str[i]);
-	if (i < *count)
+	if (i < argc)
 	{
 		free(numbers);
-		free_numbers_array(numbers_str, argc);
 		return (NULL);
 	}
-	free_numbers_array(numbers_str, argc);
 	return (numbers);
 }

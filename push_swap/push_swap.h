@@ -49,9 +49,6 @@ t_data_ab	get_direction(t_data_ab data);
 
 int			*parse_input(int argc, char *argv[], int *count);
 
-//Utility functions for input parsing
-
-int			is_in_int_range(char *str);
 // <--- Input parsing functions
 
 // Stack operations --->
