@@ -68,7 +68,7 @@ static void	free_numbers_array(char **numbers_str, int argc)
 	}
 }
 
-static int	*count_and_calloc_numbers(char **numbers_str, int *count)
+static int	*count_and_calloc_numbers(char **numbers_str, int *count, int argc)
 {
 	int	*numbers;
 	int	i;
@@ -76,13 +76,18 @@ static int	*count_and_calloc_numbers(char **numbers_str, int *count)
 	i = 0;
 	while (numbers_str[i])
 		i++;
-	numbers = ft_calloc(*count, sizeof(int));
-	if (!numbers)
+	if (i == 0)
 	{
-		free_numbers_array(numbers_str, *count);
+		free_numbers_array(numbers_str, argc);
 		return (NULL);
 	}
 	*count = i;
+	numbers = ft_calloc(*count, sizeof(int));
+	if (!numbers)
+	{
+		free_numbers_array(numbers_str, argc);
+		return (NULL);
+	}
 	return (numbers);
 }
 
@@ -95,7 +100,7 @@ int	*parse_input(int argc, char *argv[], int *count)
 	numbers_str = get_numbers_array(argc, argv);
 	if (!numbers_str)
 		return (NULL);
-	numbers = count_and_calloc_numbers(numbers_str, count);
+	numbers = count_and_calloc_numbers(numbers_str, count, argc);
 	if (!numbers)
 		return (NULL);
 	i = -1;

@@ -95,14 +95,11 @@ int	main(int argc, char *argv[])
 	int		count;
 
 	if (argc < 2)
-	{
-		ft_putstr_fd("Error\n", 1);
 		return (1);
-	}
 	numbers = parse_input(argc, argv, &count);
 	if (!numbers || has_duplicates(numbers, count))
 	{
-		ft_putstr_fd("Error\n", 1);
+		ft_putstr_fd("Error\n", 2);
 		if (numbers)
 			free(numbers);
 		return (1);

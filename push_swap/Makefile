@@ -46,6 +46,17 @@ re: fclean all
 debug: CFLAGS += -g
 debug: all clean
 
+gitTester: debug
+	curl -O https://raw.githubusercontent.com/a-kuchmambetov/Hive/main/Testers/push_swap/checker_linux
+	@[ ! -d "Push-Swap-Tester" ] && git clone https://github.com/gemartin99/Push-Swap-Tester.git || true;
+	chmod +x Push-Swap-Tester/*.sh checker_linux
+	cp push_swap Push-Swap-Tester/
+	bash ./Push-Swap-Tester/push_swap_test_linux.sh
+
+gitTester: fclean
+	rm -rf Push-Swap-Tester
+	rm -f checker_linux 0
+
 testprep: all clean
 	curl -O https://raw.githubusercontent.com/a-kuchmambetov/Hive/main/Testers/push_swap/checker_linux
 	curl -O https://raw.githubusercontent.com/a-kuchmambetov/Hive/main/Testers/push_swap/test_main.c
