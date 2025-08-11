@@ -99,11 +99,7 @@ int	get_future_pos(t_stack *stack_b, int value, int *index)
 	if (res == INT_MIN)
 	{
 		res = value_closest_biggest(stack_b, value);
-		*index = stack_i_of_v(stack_b, res);
-		if (*index > stack_size(stack_b) || res == INT_MAX)
-			*index = 0;
-		else
-			*index = stack_i_of_v(stack_b, res) + 1;
+		*index = stack_i_of_v(stack_b, res) + 1;
 		place_after = 1;
 	}
 	return (place_after);

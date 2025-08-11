@@ -58,7 +58,9 @@ gitTesterClean: fclean
 	rm -f checker_linux 0 traces.txt
 
 test: all clean
-	curl -O https://raw.githubusercontent.com/a-kuchmambetov/Hive/main/Testers/push_swap/{checker_linux, test_push_swap.sh, test_random_push_swap.sh}
+	curl -O https://raw.githubusercontent.com/a-kuchmambetov/Hive/main/Testers/push_swap/checker_linux
+	curl -O https://raw.githubusercontent.com/a-kuchmambetov/Hive/main/Testers/push_swap/test_push_swap.sh
+	curl -O https://raw.githubusercontent.com/a-kuchmambetov/Hive/main/Testers/push_swap/test_random_push_swap.sh
 	chmod +x checker_linux test_push_swap.sh test_random_push_swap.sh
 
 test100:

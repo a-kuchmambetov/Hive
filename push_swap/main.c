@@ -85,9 +85,6 @@ static void	sort_stack(t_stack *stack_a, t_stack *stack_b)
 	}
 }
 
-// Wrong case 212 78 323 434 454 115 701 315 926 749
-
-
 int	main(int argc, char *argv[])
 {
 	t_stack	stack_a;

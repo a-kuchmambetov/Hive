@@ -81,9 +81,7 @@ static int	calc_moves_from_data(t_data_ab data)
 	const int	diff[2] = {data.size_a - data.i_a, data.size_b - data.i_b};
 	int			moves;
 
-	if (data.dir_a == 1 && data.dir_b == 1)
-		moves = count_simultanious_moves(data, &moves);
-	else if (data.dir_a == -1 && data.dir_b == -1)
+	if (data.dir_a == data.dir_b)
 		moves = count_simultanious_moves(data, &moves);
 	else
 	{

@@ -33,6 +33,8 @@ typedef struct stack
 	t_node	*bottom;
 }	t_stack;
 
+// Data structure for storing information about stacks A and B
+// and their indices, sizes, and directions of moves. (For big sort)
 typedef struct data_ab
 {
 	int	i_a;
@@ -43,18 +45,31 @@ typedef struct data_ab
 	int	dir_b; // 1 for up, -1 for down
 }	t_data_ab;
 
-t_data_ab	get_direction(t_data_ab data);
-
 // Input parsing functions --->
 
+/// @brief Check if the input is valid.
+/// @param argc Number of arguments.
+/// @param argv Array of arguments.
+/// @return Returns array of integers if valid, NULL if invalid.
 int			*parse_input(int argc, char *argv[]);
-
 // <--- Input parsing functions
 
 // Stack operations --->
 
+/// @brief Constructor for stack.
+/// @param stack to be initialized.
+/// @return Returns 1 on success, 0 if stack is NULL.
 int			stack_constructor(t_stack *stack);
+
+/// @brief Destructor for stack which frees all allocated memory for nodes.
+/// @param stack to be destroyed.
+/// @return Returns 1 on success, 0 if stack is NULL.
 int			stack_destructor(t_stack *stack);
+
+/// @brief Allocates and pushes a new value onto the top of the stack.
+/// @param stack to which the value will be pushed.
+/// @param value to be pushed onto the stack.
+/// @return Returns 1 on success, 0 if stack is NULL or memory allocation fails
 int			stack_push(t_stack *stack, int value);
 
 /// @brief Setting bottom of the stack after completion of the operation.
@@ -67,7 +82,18 @@ int			stack_set_btm(t_stack *stack);
 /// @return Returns size of the stack, or 0 if stack is NULL.
 int			stack_size(t_stack *stack);
 
+/// @brief Get index of the value in the stack.
+/// @param stack for which would get top value.
+/// @param value to find index of.
+/// @return Returns index of the value in the stack, or -1 if stack is NULL or
+/// value is not found
 int			stack_i_of_v(t_stack *stack, int value);
+
+/// @brief Get value by index of the stack. (Bad implementation, use with care)
+/// @param stack for which would get value by index.
+/// @param index of the value to get.
+/// @return Returns value at the given index, or 0 if stack is NULL or
+/// index is out of bounds.
 int			stack_v_by_i(t_stack *stack, int index);
 // <--- Stack operations
 
@@ -156,10 +182,46 @@ int			big_sort(t_stack *stack_a, t_stack *stack_b);
 
 // Big sort Utility functions --->
 
+/// @brief Find the index of the smallest value in stack B.
+/// @param stack_b The stack to search for the smallest value.
+/// @return Returns the index of the smallest value, or 0 if stack_b is NULL
+/// or empty, or INT_MIN if no elements are found.
 int			value_closest_smallest(t_stack *stack_b, int value);
+
+/// @brief Find the index of the largest value in stack B.
+/// @param stack_b The stack to search for the largest value.
+/// @return Returns the index of the largest value, or 0 if stack_b is NULL
+/// or empty, or INT_MAX if no elements are found.
 int			value_closest_biggest(t_stack *stack_b, int value);
+
+/// @brief Get the future position for value from stack A inside of stack B.
+/// @param stack_b The stack to search for the value.
+/// @param value The value to find the future position of.
+/// @param i_b Pointer to an integer to store the index of the value in stack B
+/// @return Returns the future position of the value in stack B, or -1 if the
+/// value is not found or stack_b is NULL or empty.
 int			get_future_pos(t_stack *stack_b, int value, int *i_b);
+
+/// @brief Get direction of the moves for stack A and stack B.
+/// @param data The data structure containing information about the stacks.
+/// @return Returns a t_data_ab structure containing the direction of the moves
+/// for stack A and stack B, 1 for r_ ops and -1 for rr_ ops.
+t_data_ab	get_direction(t_data_ab data);
+
+/// @brief Count the number of moves needed to place a value from stack A
+/// inside stack B.
+/// @param stack_a The stack A to get index of given value.
+/// @param stack_b The stack B to get index of the future position for value.
+/// @param value The value to find the number of moves for.
+/// @return Returns the number of moves needed to place the value from stack A
+/// inside stack B, or -1 if stack A or stack B is NULL or empty.
 int			count_moves(t_stack *stack_a, t_stack *stack_b, int value);
+
+/// @brief Perform the moves to place a value from stack A inside stack B.
+/// @param stack_a The stack A to get index of given value.
+/// @param stack_b The stack B to get index of the future position for value.
+/// @param value The value to find the number of moves for.
+/// @return Returns 1 on success, -1 if stack A or stack B is NULL or empty.
 int			do_moves(t_stack *stack_a, t_stack *stack_b, int value);
 // <--- Big sort Utility functions
 

@@ -12,11 +12,11 @@
 
 #include "push_swap.h"
 
-static int is_in_int_range(char *str)
+static int	is_in_int_range(char *str)
 {
-	long num;
-	int sign;
-	int i;
+	long	num;
+	int		sign;
+	int		i;
 
 	i = 0;
 	sign = 1;
@@ -36,9 +36,9 @@ static int is_in_int_range(char *str)
 	return (1);
 }
 
-static int is_valid_number(char *str)
+static int	is_valid_number(char *str)
 {
-	int i;
+	int	i;
 
 	if (!str || !*str)
 		return (0);
@@ -56,10 +56,10 @@ static int is_valid_number(char *str)
 	return (is_in_int_range(str));
 }
 
-int *parse_input(int argc, char *argv[])
+int	*parse_input(int argc, char *argv[])
 {
-	int *numbers;
-	int i;
+	int	*numbers;
+	int	i;
 
 	numbers = ft_calloc(sizeof(int), argc - 1);
 	if (!numbers)
