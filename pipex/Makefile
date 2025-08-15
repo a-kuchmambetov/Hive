@@ -44,4 +44,11 @@ re: fclean all
 debug: CFLAGS += -g
 debug: all clean
 
-.PHONY: all clean fclean re debug
+gitTester:
+	@[ ! -d "42_pipex_tester" ] && git clone https://github.com/michmos/42_pipex_tester.git; \
+	cd 42_pipex_tester && bash run.sh && cd ..;
+
+gitTesterClean: fclean
+	@[ -d "42_pipex_tester" ] && rm -rf 42_pipex_tester;
+
+.PHONY: all clean fclean re debug gitTester gitTesterClean
