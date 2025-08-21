@@ -4,7 +4,7 @@ CC      = cc
 CFLAGS  = -Wall -Wextra -Werror -Imlx
 LDFLAGS = -Lmlx -lmlx -lXext -lX11 -lm
 
-SRC     = main.c
+SRC     = main.c render_utils.c 
 OBJ     = $(SRC:.c=.o)
 
 all: $(NAME)
