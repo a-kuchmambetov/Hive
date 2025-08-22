@@ -2,9 +2,12 @@
 #define MAIN_H
 
 #include "config.h"
+#include "libft/libft.h"
+//Lib for graphics
 #include "mlx/mlx.h"
-#include <stdlib.h>
-#include <unistd.h>
+//Lib for file reading
+#include <fcntl.h>
+// Lib for perror
 #include <stdio.h>
 
 enum e_TEX_ID
@@ -49,6 +52,11 @@ typedef struct s_map
 	int		cols;
 } t_map;
 
+typedef struct s_array3
+{
+	int		data[3];
+} t_array3;
+
 typedef struct s_level
 {
 	int		num_of_collectibles;
@@ -57,13 +65,22 @@ typedef struct s_level
 	int		exit[2];
 } t_level;
 
+
 // Function prototypes
+
+int close_game(t_game *game);
+
+int read_map(t_map *map, char *file_name);
+
+int parse_map(t_map map);
+
+
 //
 
 unsigned int getp(t_img *im, int x, int y);
 void blit_copy(t_img *dst, t_img *src, int dx, int dy);
 void blit_colorkey(t_img *dst, t_img *src, int dx, int dy, unsigned int key);
 
-// int parse_map(const char *filename, t_map *map);
+void free_map_data(char **data, int rows, int cols);
 
 #endif

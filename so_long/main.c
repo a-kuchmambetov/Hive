@@ -39,13 +39,13 @@ int init_TEX(t_game *game)
     {
         game->textures[i].img = mlx_xpm_file_to_image(game->mlx, (char *)TEX_filenames[i], &game->textures[i].w, &game->textures[i].h);
         if (!game->textures[i].img)
-            return 0;
+            return 1;
         game->textures[i].a = mlx_get_data_addr(game->textures[i].img, &game->textures[i].bpp, &game->textures[i].ll, &game->textures[i].endian);
         if (!game->textures[i].a)
-            return 0;
+            return 1;
         i++;
     }
-    return 1;
+    return 0;
 }
 
 void init_game(t_game *game)
@@ -54,6 +54,7 @@ void init_game(t_game *game)
     if (!(game->mlx = mlx_init()))
     {
         perror("Failed to initialize mlx");
+        close_game(game);
     }
     game->win = mlx_new_window(game->mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "So Long");
     if (!game->win)
@@ -61,7 +62,7 @@ void init_game(t_game *game)
         perror("Failed to create window");
         close_game(game);
     }
-    if (!init_TEX(game))
+    if (init_TEX(game))
     {
         perror("Failed to initialize game textures");
         close_game(game);
@@ -90,6 +91,12 @@ void init_frame(t_game *game)
 
 int main(void)
 {
+    t_map map;
+
+    int res = read_map(&map, "maps/def.ber");
+    (void ) res;
+    int res2 = parse_map(map);
+    (void ) res2;
     t_game game;
 
     init_game(&game);
