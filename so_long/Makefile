@@ -7,7 +7,7 @@ LDFLAGS = -Lmlx -lmlx -lXext -lX11 -lm
 LIBFTDIR = libft
 LIBFT = $(LIBFTDIR)/libft.a
 
-SRC     = main.c map_reader.c map_parser.c render_utils.c 
+SRC     = main.c free_utils.c init.c map_reader.c map_parser.c get_level_data.c render_utils.c render.c
 
 OBJS     = $(SRC:.c=.o)
 

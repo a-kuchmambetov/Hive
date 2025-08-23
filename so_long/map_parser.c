@@ -61,7 +61,6 @@ static void check_map_items(char **data, int coordsYX[2], t_array3 *count)
     else if (data[coordsYX[0]][coordsYX[1]] == 'E')
         count->data[2]++;
     data[coordsYX[0]][coordsYX[1]] = 'M';
-    // Recursive call for 4 directions;
     check_map_items(data, (int[]){coordsYX[0] - 1, coordsYX[1]}, count);
     check_map_items(data, (int[]){coordsYX[0] + 1, coordsYX[1]}, count);
     check_map_items(data, (int[]){coordsYX[0], coordsYX[1] - 1}, count);
@@ -101,6 +100,8 @@ int parse_map(t_map map)
     char **data;
 
     data = duplicate_map_data(map);
+    if (!data)
+        return (ft_putstr_fd("Error: map duplicate allocation failed\n", 2), 1);
     res = (t_array3){0};
     if (check_outer_walls(map))
         return (ft_putstr_fd("Error: map is not surrounded by walls\n", 2), 1);
@@ -109,7 +110,7 @@ int parse_map(t_map map)
     if (existing_elem.data[1] != 1 || existing_elem.data[2] != 1)
         return (ft_putstr_fd("Error: invalid number of player/exit\n", 2), 1);
     check_map_items(data, start_pos, &res);
-    free_map_data(data, map.rows, map.cols);
+    free_map_data(data, map.rows);
     if (res.data[0] != existing_elem.data[0])
         return (ft_putstr_fd("Error: collectibles are not valid\n", 2), 1);
     if (res.data[1] != existing_elem.data[1])

@@ -22,43 +22,47 @@ static int get_line_length(int fd)
         read_status = read(fd, input, 1);
         if (read_status == -1)
             return (perror("Error during reading map file"), -1);
-        if (input[0] == '\n' || read_status == 0)
+        if (read_status == 0 || input[0] == '\n')
             return (length);
         length++;
     }
     return (0);
 }
 
-static int save_map(t_map *map, char *file_name)
+
+static int save_map(t_map *map, int fd)
 {
-    const int fd = open_file(file_name);
     char *line;
     int read_status;
     int i;
 
-    map->data = malloc(map->rows);
-    line = ft_calloc(1, map->cols);
+    if (!(map->data = malloc(map->rows * sizeof(char*))))
+        return (perror("Error allocating memory for map data"), 1);
+    if (!(line = ft_calloc(1, map->cols + 2)))
+        return (perror("Error allocating memory for line buffer"), free(map->data), 1);
     i = 0;
     read_status = 1;
     while (read_status != 0)
     {
         read_status = read(fd, line, map->cols + 1);
         if (read_status == -1)
-            return (perror("Error during reading map file"), 1);
+            return (perror("Error during reading map file"), free(line), 1);
         if (read_status == 0)
             break;
         map->data[i] = ft_strdup(line);
         map->data[i][map->cols] = 0;
         i++;
     }
-    return (0);
+    return (free(line), 0);
 }
 
 int read_map(t_map *map, char *file_name)
 {
-    const int fd = open_file(file_name);
+    int fd;
     int cols;
+    int res;
 
+    fd = open_file(file_name);
     if (fd == 1)
         return (1);
     *map = (t_map){0};
@@ -72,5 +76,8 @@ int read_map(t_map *map, char *file_name)
         map->rows += 1;
     }
     close(fd);
-    return (save_map(map, file_name));
+    fd = open_file(file_name);
+    res = save_map(map, fd);
+    close(fd);
+    return (res);
 }

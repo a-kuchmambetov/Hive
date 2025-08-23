@@ -17,10 +17,6 @@ enum e_TEX_ID
 	TEX_COLLECTIBLE,
 	TEX_EXIT,
 	TEX_PLAYER_IDLE,
-	TEX_PLAYER_WALK_LEFT,
-	TEX_PLAYER_WALK_RIGHT,
-	TEX_PLAYER_WALK_UP,
-	TEX_PLAYER_WALK_DOWN,
 	TEX_COUNT
 };
 
@@ -35,15 +31,6 @@ typedef struct s_img
 	int		h;
 } t_img;
 
-typedef struct s_game
-{
-	void	*mlx;
-	void	*win;
-	t_img	textures[TEX_COUNT];
-	int		p_pos_col;
-	int		p_pos_row;
-	t_img	frame;
-} t_game;
 
 typedef struct s_map
 {
@@ -59,28 +46,52 @@ typedef struct s_array3
 
 typedef struct s_level
 {
-	int		num_of_collectibles;
-	int		collectible_count;
-	int		player_start[2];
-	int		exit[2];
+	int		total_collectibles;
+	int		collected_count;
+	int		p_pos[2];
+	int		e_pos[2];
 } t_level;
 
-
+typedef struct s_game
+{
+	void	*mlx;
+	void	*win;
+	t_img	textures[TEX_COUNT];
+	t_img	frame;
+	t_map	map;
+	t_level	level;
+	int		move_count;
+} t_game;
 // Function prototypes
 
+// Main game functions
 int close_game(t_game *game);
 
+// Map functions  
 int read_map(t_map *map, char *file_name);
-
 int parse_map(t_map map);
 
+// Rendering functions
+void render_map(t_game *game);
+void render_player(t_game *game, int py, int px);
 
-//
+// Player movement functions
+// void move_player(t_game *game, int dy, int dx);
+// void move_player_up(t_game *game);
 
+// Initialization functions
+void init_game(t_game *game, char *map_file_name);
+
+// Level data functions
+void get_level_data(t_map map, t_level *level);
+
+// Rendering utilities
 unsigned int getp(t_img *im, int x, int y);
 void blit_copy(t_img *dst, t_img *src, int dx, int dy);
 void blit_colorkey(t_img *dst, t_img *src, int dx, int dy, unsigned int key);
 
-void free_map_data(char **data, int rows, int cols);
+// Memory management functions
+void free_map_data(char **data, int rows);
+int free_game(t_game *game);
 
 #endif

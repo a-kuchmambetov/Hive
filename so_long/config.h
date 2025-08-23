@@ -3,10 +3,6 @@
 
 // Tile sizes
 #define TILE_SIZE 40
-// Window sizes
-// Must follow rule w = tile * cols; h = tile * rows
-#define WINDOW_WIDTH (TILE_SIZE * 32)
-#define WINDOW_HEIGHT (TILE_SIZE * 18)
 // Map textures
 #define TEXTURE_EMPTY "textures/tiles/empty.xpm"
 #define TEXTURE_WALL "textures/tiles/wall.xpm"
@@ -14,9 +10,31 @@
 #define TEXTURE_EXIT "textures/tiles/exit.xpm"
 // Player textures
 #define TEXTURE_PLAYER_IDLE "textures/player/idle.xpm"
-#define TEXTURE_PLAYER_WALK_LEFT "textures/player/walk_left.xpm"
-#define TEXTURE_PLAYER_WALK_RIGHT "textures/player/walk_right.xpm"
-#define TEXTURE_PLAYER_WALK_UP "textures/player/walk_up.xpm"
-#define TEXTURE_PLAYER_WALK_DOWN "textures/player/walk_down.xpm"
+
+// Linux (X11) keycodes
+#define LINUX
+#ifdef LINUX
+#  define K_ESC    65307
+#  define K_W      119
+#  define K_A      97
+#  define K_S      115
+#  define K_D      100
+#  define K_UP     65362
+#  define K_DOWN   65364
+#  define K_LEFT   65361
+#  define K_RIGHT  65363
+#else
+// macOS (Cocoa, 42's MiniLibX) keycodes
+#  define K_ESC    53
+#  define K_W      13
+#  define K_A      0
+#  define K_S      1
+#  define K_D      2
+#  define K_UP     126
+#  define K_DOWN   125
+#  define K_LEFT   123
+#  define K_RIGHT  124
+#endif
+
 
 #endif // CONFIG_H

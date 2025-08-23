@@ -1,133 +1,73 @@
 #include "main.h"
 
-int close_game(t_game *game)
+static void move_player(t_game *game, int dy, int dx)
 {
-    int i;
+    int new_y = game->level.p_pos[0] + dy;
+    int new_x = game->level.p_pos[1] + dx;
 
-    if (!game)
-        return (0);
-    i = 0;
-    while (i < TEX_COUNT)
+    if (game->map.data[new_y][new_x] == '1')
+        return; // Out of bounds
+    if (game->map.data[new_y][new_x] == 'C')
     {
-        if (game->textures[i].img)
-            mlx_destroy_image(game->mlx, game->textures[i].img);
-        i++;
+        game->level.collected_count++;
+        game->map.data[new_y][new_x] = '0';
     }
-    if (game->frame.img)
-        mlx_destroy_image(game->mlx, game->frame.img);
-    if (game->win)
-        mlx_destroy_window(game->mlx, game->win);
-    if (game->mlx)
-    {
-        mlx_destroy_display(game->mlx);
-        free(game->mlx);
-    }
-    exit(0);
+    if (game->map.data[new_y][new_x] == 'E' && game->level.collected_count == game->level.total_collectibles)
+        close_game(game);
+    else if (game->map.data[new_y][new_x] == 'E' && game->level.collected_count < game->level.total_collectibles)
+        return ;
+    render_player(game, new_y, new_x);
+    game->level.p_pos[0] = new_y;
+    game->level.p_pos[1] = new_x;
+    game->move_count++;
+    ft_putstr_fd("Move Count: ", 1);
+    ft_putnbr_fd(game->move_count, 1);
+    ft_putstr_fd("\n", 1);
+}
+
+static int on_key_press(int keycode, t_game *game)
+{
+    if (keycode == K_ESC)
+        close_game(game);
+    if (keycode == K_W || keycode == K_UP)
+        move_player(game, -1, 0);
+    if (keycode == K_S || keycode == K_DOWN)
+        move_player(game, 1, 0);
+    if (keycode == K_A || keycode == K_LEFT)
+        move_player(game, 0, -1);
+    if (keycode == K_D || keycode == K_RIGHT)
+        move_player(game, 0, 1);
     return (0);
 }
-int init_TEX(t_game *game)
-{
-    const char *TEX_filenames[TEX_COUNT] = {
-        TEXTURE_EMPTY, TEXTURE_WALL, TEXTURE_COLLECTIBLE,
-        TEXTURE_EXIT, TEXTURE_PLAYER_IDLE, TEXTURE_PLAYER_WALK_LEFT,
-        TEXTURE_PLAYER_WALK_RIGHT, TEXTURE_PLAYER_WALK_UP,
-        TEXTURE_PLAYER_WALK_DOWN};
-    int i;
 
-    i = 0;
-    while (i < TEX_COUNT)
+static int check_file_type(char *filename)
+{
+    char *ext = ft_strrchr(filename, '.');
+    
+    if (!ext || ft_strncmp(ext, ".ber", 4) != 0)
     {
-        game->textures[i].img = mlx_xpm_file_to_image(game->mlx, (char *)TEX_filenames[i], &game->textures[i].w, &game->textures[i].h);
-        if (!game->textures[i].img)
-            return 1;
-        game->textures[i].a = mlx_get_data_addr(game->textures[i].img, &game->textures[i].bpp, &game->textures[i].ll, &game->textures[i].endian);
-        if (!game->textures[i].a)
-            return 1;
-        i++;
+        ft_putstr_fd("Invalid file type. Please use a .ber file.\n", 2);
+        return (0);
     }
-    return 0;
+    return (1);
 }
 
-void init_game(t_game *game)
+int main(int argc, char **argv)
 {
-    *game = (t_game){0};
-    if (!(game->mlx = mlx_init()))
-    {
-        perror("Failed to initialize mlx");
-        close_game(game);
-    }
-    game->win = mlx_new_window(game->mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "So Long");
-    if (!game->win)
-    {
-        perror("Failed to create window");
-        close_game(game);
-    }
-    if (init_TEX(game))
-    {
-        perror("Failed to initialize game textures");
-        close_game(game);
-    }
-    game->p_pos_col = 0;
-    game->p_pos_row = 0;
-}
-
-void init_frame(t_game *game)
-{
-    game->frame = (t_img){0};
-    int W = WINDOW_WIDTH, H = WINDOW_HEIGHT;
-    game->frame = (t_img){mlx_new_image(game->mlx, W, H), 0, 0, 0, 0, W, H};
-    if (!game->frame.img)
-    {
-        perror("Failed to create frame buffer");
-        close_game(game);
-    }
-    game->frame.a = mlx_get_data_addr(game->frame.img, &game->frame.bpp, &game->frame.ll, &game->frame.endian);
-    if (!game->frame.a)
-    {
-        perror("Failed to get frame buffer data address");
-        close_game(game);
-    }
-}
-
-int main(void)
-{
-    t_map map;
-
-    int res = read_map(&map, "maps/def.ber");
-    (void ) res;
-    int res2 = parse_map(map);
-    (void ) res2;
     t_game game;
+    int w, h;
 
-    init_game(&game);
-    // Create frame
-    init_frame(&game);
-    // 1) Draw (tile) background over the whole frame
-    int posX = 0;
-    int posY = 0;
-    int rows = 3;
-    int cols = 3;
-    int tile_size = TILE_SIZE;
-    while (posY < cols * tile_size)
+    if (!check_file_type(argv[1]) || argc != 2)
+        return (1);
+    init_game(&game, argv[1]);
+    mlx_get_screen_size(game.mlx, &w, &h);
+    if (game.map.cols * TILE_SIZE > w || game.map.rows * TILE_SIZE > h)
     {
-        posX = 0;
-        while (posX < rows * tile_size)
-        {
-            if (posX >= 40 && posX < 80 && posY >= 40 && posY < 80)
-                blit_copy(&game.frame, &game.textures[TEX_WALL], posX, posY);
-            else
-                blit_copy(&game.frame, &game.textures[TEX_EMPTY], posX, posY);
-            posX += game.textures[TEX_EMPTY].w;
-        }
-        posY += game.textures[TEX_EMPTY].h;
+        ft_putstr_fd("Map is too large for the screen.\n", 2);
+        close_game(&game);
     }
-    // 2) Draw sprite with color-key transparency at desired position
-    int PX = 1 * 40, PY = 1 * 40;                                   // <-- player positions
-    unsigned int key = getp(&game.textures[TEX_PLAYER_IDLE], 0, 0); // treat top-left as “transparent”
-    blit_colorkey(&game.frame, &game.textures[TEX_PLAYER_IDLE], PX, PY, key);
-
-    // Show and loop
-    mlx_put_image_to_window(game.mlx, game.win, game.frame.img, 0, 0);
+    render_map(&game);
+    mlx_key_hook(game.win, on_key_press, &game);
     mlx_hook(game.win, 17, 0, close_game, &game);
     mlx_loop(game.mlx);
 }
