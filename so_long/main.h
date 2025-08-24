@@ -62,25 +62,14 @@ typedef struct s_game
 	t_level	level;
 	int		move_count;
 } t_game;
-// Function prototypes
 
-// Main game functions
-int close_game(t_game *game);
+// Function prototypes
+// Initialization functions
+void init_game(t_game *game, char *map_file_name);
 
 // Map functions  
 int read_map(t_map *map, char *file_name);
 int parse_map(t_map map);
-
-// Rendering functions
-void render_map(t_game *game);
-void render_player(t_game *game, int py, int px);
-
-// Player movement functions
-// void move_player(t_game *game, int dy, int dx);
-// void move_player_up(t_game *game);
-
-// Initialization functions
-void init_game(t_game *game, char *map_file_name);
 
 // Level data functions
 void get_level_data(t_map map, t_level *level);
@@ -90,8 +79,13 @@ unsigned int getp(t_img *im, int x, int y);
 void blit_copy(t_img *dst, t_img *src, int dx, int dy);
 void blit_colorkey(t_img *dst, t_img *src, int dx, int dy, unsigned int key);
 
+// Rendering functions
+void render_map(t_game *game);
+void render_player(t_game *game, int py, int px);
+
 // Memory management functions
 void free_map_data(char **data, int rows);
 int free_game(t_game *game);
+int close_game(t_game *game);
 
 #endif

@@ -36,5 +36,4 @@
 #  define K_RIGHT  124
 #endif
 
-
 #endif // CONFIG_H

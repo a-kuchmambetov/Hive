@@ -57,7 +57,7 @@ int main(int argc, char **argv)
     t_game game;
     int w, h;
 
-    if (!check_file_type(argv[1]) || argc != 2)
+    if (argc != 2 || !check_file_type(argv[1]))
         return (1);
     init_game(&game, argv[1]);
     mlx_get_screen_size(game.mlx, &w, &h);
