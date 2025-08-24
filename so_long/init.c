@@ -38,13 +38,13 @@ static void init_frame(t_game *game)
     game->frame = (t_img){mlx_new_image(game->mlx, W, H), 0, 0, 0, 0, W, H};
     if (!game->frame.img)
     {
-        perror("Failed to create frame buffer");
+        perror("Error\nFailed to create frame buffer");
         close_game(game);
     }
     game->frame.a = mlx_get_data_addr(game->frame.img, &game->frame.bpp, &game->frame.ll, &game->frame.endian);
     if (!game->frame.a)
     {
-        perror("Failed to get frame buffer data address");
+        perror("Error\nFailed to get frame buffer data address");
         close_game(game);
     }
 }
@@ -55,7 +55,7 @@ void init_game(t_game *game, char *map_file_name)
     *game = (t_game){0};
     if (!(game->mlx = mlx_init()))
     {
-        perror("Failed to initialize mlx");
+        perror("Error\nFailed to initialize mlx");
         close_game(game);
     }
     init_map(game, map_file_name);
@@ -64,12 +64,12 @@ void init_game(t_game *game, char *map_file_name)
     game->win = mlx_new_window(game->mlx, w, h, "So Long");
     if (!game->win)
     {
-        perror("Failed to create window");
+        perror("Error\nFailed to create window");
         close_game(game);
     }
     if (init_TEX(game))
     {
-        perror("Failed to initialize game textures");
+        perror("Error\nFailed to initialize game textures");
         close_game(game);
     }
     init_frame(game);

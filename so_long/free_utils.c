@@ -5,10 +5,13 @@ void free_map_data(char **data, int rows)
     int i;
 
     i = 0;
-    while (i < rows)
+    if (data)
     {
-        free(data[i]);
-        i++;
+        while (i < rows)
+        {
+            free(data[i]);
+            i++;
+        }
     }
     free(data);
 }
@@ -44,7 +47,7 @@ int free_game(t_game *game)
 int close_game(t_game *game)
 {
     if (free_game(game))
-        ft_putstr_fd("Error: no game object to free\n", 2);
+        ft_putstr_fd("Error\nNo game object to free\n", 2);
     exit(0);
     return (0);
 }

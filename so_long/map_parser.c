@@ -101,21 +101,21 @@ int parse_map(t_map map)
 
     data = duplicate_map_data(map);
     if (!data)
-        return (ft_putstr_fd("Error: map duplicate allocation failed\n", 2), 1);
+        return (ft_putstr_fd("Error\nMap duplicate allocation failed\n", 2), 1);
     res = (t_array3){0};
     if (check_outer_walls(map))
-        return (ft_putstr_fd("Error: map is not surrounded by walls\n", 2), 1);
+        return (ft_putstr_fd("Error\nMap is not surrounded by walls\n", 2), 1);
     if (existing_elem.data[0] == 0)
-        return ( ft_putstr_fd("Error: no collectibles found\n", 2), 1);
+        return (ft_putstr_fd("Error\nNo collectibles found\n", 2), 1);
     if (existing_elem.data[1] != 1 || existing_elem.data[2] != 1)
-        return (ft_putstr_fd("Error: invalid number of player/exit\n", 2), 1);
+        return (ft_putstr_fd("Error\nInvalid number of player/exit\n", 2), 1);
     check_map_items(data, start_pos, &res);
     free_map_data(data, map.rows);
     if (res.data[0] != existing_elem.data[0])
-        return (ft_putstr_fd("Error: collectibles are not valid\n", 2), 1);
+        return (ft_putstr_fd("Error\nCollectibles are not valid\n", 2), 1);
     if (res.data[1] != existing_elem.data[1])
-        return (ft_putstr_fd("Error: player is not valid\n", 2), 1);
+        return (ft_putstr_fd("Error\nPlayer is not valid\n", 2), 1);
     if (res.data[2] != existing_elem.data[2])
-        return (ft_putstr_fd("Error: exit is not valid\n", 2), 1);
+        return (ft_putstr_fd("Error\nExit is not valid\n", 2), 1);
     return (0);
 }
