@@ -70,7 +70,8 @@ int	close_game(t_game *game)
 		ft_putstr_fd("Congratulations! You've completed the level!\n", 1);
 		exit(0);
 	}
-	else
+	else if (game->level.collected_count != game->level.total_collectibles
+		&& game->level.total_collectibles > 0)
 		ft_putstr_fd("Game Over! You exited before collecting all items.\n", 1);
 	exit(1);
 	return (0);
