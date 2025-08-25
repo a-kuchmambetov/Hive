@@ -1,14 +1,26 @@
-#ifndef MAIN_H
-#define MAIN_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.h                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akuchmam <akuchmam@student.hive.fi>        #+#  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025-08-25 10:12:49 by akuchmam          #+#    #+#             */
+/*   Updated: 2025-08-25 10:12:49 by akuchmam         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include "config.h"
-#include "libft/libft.h"
+#ifndef MAIN_H
+# define MAIN_H
+
+# include "config.h"
+# include "libft/libft.h"
 //Lib for graphics
-#include "mlx/mlx.h"
+# include "mlx/mlx.h"
 //Lib for file reading
-#include <fcntl.h>
+# include <fcntl.h>
 // Lib for perror
-#include <stdio.h>
+# include <stdio.h>
 
 enum e_TEX_ID
 {
@@ -29,20 +41,19 @@ typedef struct s_img
 	int		endian;
 	int		w;
 	int		h;
-} t_img;
-
+}	t_img;
 
 typedef struct s_map
 {
 	char	**data;
 	int		rows;
 	int		cols;
-} t_map;
+}	t_map;
 
 typedef struct s_array3
 {
 	int		data[3];
-} t_array3;
+}	t_array3;
 
 typedef struct s_level
 {
@@ -50,7 +61,7 @@ typedef struct s_level
 	int		collected_count;
 	int		p_pos[2];
 	int		e_pos[2];
-} t_level;
+}	t_level;
 
 typedef struct s_game
 {
@@ -61,31 +72,32 @@ typedef struct s_game
 	t_map	map;
 	t_level	level;
 	int		move_count;
-} t_game;
+}	t_game;
 
 // Function prototypes
 // Initialization functions
-void init_game(t_game *game, char *map_file_name);
+void			init_game(t_game *game, char *map_file_name);
 
-// Map functions  
-int read_map(t_map *map, char *file_name);
-int parse_map(t_map map);
+// Map functions
+int				read_map(t_map *map, char *file_name);
+int				check_valid_map(t_map map, t_array3 existing_elem, char **data);
+int				parse_map(t_map map);
 
 // Level data functions
-void get_level_data(t_map map, t_level *level);
+void			get_level_data(t_map map, t_level *level);
 
 // Rendering utilities
-unsigned int getp(t_img *im, int x, int y);
-void blit_copy(t_img *dst, t_img *src, int dx, int dy);
-void blit_colorkey(t_img *dst, t_img *src, int dx, int dy, unsigned int key);
+unsigned int	getp(t_img *im, int x, int y);
+void			blit_copy(t_img *dst, t_img *src, int dx, int dy);
+void			blit_colorkey(t_img *dst, t_img *src, int dx, int dy);
 
 // Rendering functions
-void render_map(t_game *game);
-void render_player(t_game *game, int py, int px);
+void			render_map(t_game *game);
+void			render_player(t_game *game, int py, int px);
 
 // Memory management functions
-void free_map_data(char **data, int rows);
-int free_game(t_game *game);
-int close_game(t_game *game);
+void			free_map_data(char **data, int rows);
+int				free_game(t_game *game);
+int				close_game(t_game *game);
 
 #endif

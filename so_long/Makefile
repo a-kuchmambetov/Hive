@@ -1,3 +1,4 @@
+# Makefile
 NAME    = so_long
 
 CC      = cc
@@ -9,7 +10,7 @@ LIBFT    = $(LIBFTDIR)/libft.a
 MLXDIR   = mlx
 MLX      = $(MLXDIR)/libmlx.a
 
-SRC      = main.c free_utils.c init.c map_reader.c map_parser.c get_level_data.c render_utils.c render.c
+SRC      = main.c free_utils.c init.c map_reader.c map_parser_utils.c map_parser.c get_level_data.c render_utils.c render.c
 
 OBJS     = $(SRC:.c=.o)
 

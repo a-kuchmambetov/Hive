@@ -1,19 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   config.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akuchmam <akuchmam@student.hive.fi>        #+#  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025-08-25 10:08:21 by akuchmam          #+#    #+#             */
+/*   Updated: 2025-08-25 10:08:21 by akuchmam         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CONFIG_H
-#define CONFIG_H
+# define CONFIG_H
 
 // Tile sizes
-#define TILE_SIZE 40
+# define TILE_SIZE 40
 // Map textures
-#define TEXTURE_EMPTY "textures/tiles/empty.xpm"
-#define TEXTURE_WALL "textures/tiles/wall.xpm"
-#define TEXTURE_COLLECTIBLE "textures/tiles/collectible.xpm"
-#define TEXTURE_EXIT "textures/tiles/exit.xpm"
+# define TEXTURE_EMPTY "textures/tiles/empty.xpm"
+# define TEXTURE_WALL "textures/tiles/wall.xpm"
+# define TEXTURE_COLLECTIBLE "textures/tiles/collectible.xpm"
+# define TEXTURE_EXIT "textures/tiles/exit.xpm"
 // Player textures
-#define TEXTURE_PLAYER_IDLE "textures/player/idle.xpm"
+# define TEXTURE_PLAYER_IDLE "textures/player/idle.xpm"
 
 // Linux (X11) keycodes
-#define LINUX
-#ifdef LINUX
+# define LINUX
+# ifdef LINUX
 #  define K_ESC    65307
 #  define K_W      119
 #  define K_A      97
@@ -23,7 +35,7 @@
 #  define K_DOWN   65364
 #  define K_LEFT   65361
 #  define K_RIGHT  65363
-#else
+# else
 // macOS (Cocoa, 42's MiniLibX) keycodes
 #  define K_ESC    53
 #  define K_W      13
@@ -34,6 +46,6 @@
 #  define K_DOWN   125
 #  define K_LEFT   123
 #  define K_RIGHT  124
-#endif
+# endif
 
 #endif // CONFIG_H
