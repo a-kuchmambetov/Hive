@@ -61,6 +61,8 @@ static int	check_map_chars(t_map map)
 
 int	check_valid_map(t_map map, t_array3 existing_elem, char **data)
 {
+	if (map.cols == 0 || map.rows == 0)
+		return (ft_putstr_fd("Error\nMap is empty\n", 2), 1);
 	if (!data)
 		return (ft_putstr_fd("Error\nMap duplicate allocation failed\n", 2), 1);
 	if (check_map_chars(map))

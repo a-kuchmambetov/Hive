@@ -96,11 +96,8 @@ int	parse_map(t_map map)
 	res = (t_array3){0};
 	check_map_items(data, start_pos, &res);
 	free_map_data(data, map.rows);
-	if (res.data[0] != exist_elem.data[0])
-		return (ft_putstr_fd("Error\nCollectibles are not valid\n", 2), 1);
-	if (res.data[1] != exist_elem.data[1])
-		return (ft_putstr_fd("Error\nPlayer is not valid\n", 2), 1);
-	if (res.data[2] != exist_elem.data[2])
-		return (ft_putstr_fd("Error\nExit is not valid\n", 2), 1);
+	if (res.data[0] != exist_elem.data[0] || res.data[1] != exist_elem.data[1] 
+			|| res.data[2] != exist_elem.data[2])
+		return (ft_putstr_fd("Error\nImpossible to finish map.\n", 2), 1);
 	return (0);
 }

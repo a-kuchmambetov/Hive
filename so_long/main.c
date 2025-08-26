@@ -53,7 +53,7 @@ static int	on_key_press(int keycode, t_game *game)
 
 static int	check_file_type(char *filename)
 {
-	const char	*ext = ft_strrchr(filename, '.');
+	const char	*ext = filename + ft_strlen(filename) - 4;
 
 	if (!ext || ft_strncmp(ext, ".ber", 4) != 0)
 	{

@@ -41,19 +41,29 @@ static int	get_line_length(int fd)
 	return (0);
 }
 
+static void	*safe_alloc(char *err_msg,size_t nmemb, size_t size)
+{
+	void	*dst;
+
+	dst = ft_calloc(nmemb, size);
+	if (!dst)
+	{
+		perror(err_msg);
+		return (NULL);
+	}
+	return (dst);
+}
+
 static int	save_map(t_map *map, int fd)
 {
 	char	*line;
 	int		read_status;
 	int		i;
 
-	map->data = malloc(map->rows * sizeof(char *));
-	if (!map->data)
-		return (perror("Error\nFailed to allocate memory for map data"), 1);
-	line = ft_calloc(1, map->cols + 2);
-	if (!line)
-		return (perror("Error\nFailed to allocate memory for line"),
-			free(map->data), 1);
+	map->data = safe_alloc("Error\nFailed to allocate for map", sizeof(char *), map->rows);
+	line = safe_alloc("Error\nFailed to allocate for line", 1, map->cols + 2);
+	if (!map->data || !line)
+		return (1);
 	i = 0;
 	read_status = 1;
 	while (read_status != 0)
@@ -63,6 +73,8 @@ static int	save_map(t_map *map, int fd)
 			return (perror("Error\nFailed to read map file"), free(line), 1);
 		if (read_status == 0)
 			break ;
+		if (line[0] == '\n')
+			return (ft_putstr_fd("Error\nEmpty line in map file\n", 2), free(line), 1);
 		map->data[i] = ft_strdup(line);
 		map->data[i][map->cols] = 0;
 		i++;
