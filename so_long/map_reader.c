@@ -17,7 +17,7 @@ static int	open_file(char *file_name)
 	const int	fd = open(file_name, O_RDONLY);
 
 	if (fd == -1)
-		return (perror("Error\nFailed to open file"), 1);
+		return (perror("Error\nFailed to open file\n"), 1);
 	return (fd);
 }
 
@@ -33,7 +33,7 @@ static int	get_line_length(int fd)
 	{
 		read_status = read(fd, input, 1);
 		if (read_status == -1)
-			return (perror("Error\nFailed to read map file"), -1);
+			return (perror("Error\nFailed to read map file\n"), -1);
 		if (read_status == 0 || input[0] == '\n')
 			return (length);
 		length++;
@@ -41,7 +41,7 @@ static int	get_line_length(int fd)
 	return (0);
 }
 
-static void	*safe_alloc(char *err_msg,size_t nmemb, size_t size)
+static void	*safe_alloc(char *err_msg, size_t nmemb, size_t size)
 {
 	void	*dst;
 
@@ -56,30 +56,31 @@ static void	*safe_alloc(char *err_msg,size_t nmemb, size_t size)
 
 static int	save_map(t_map *map, int fd)
 {
-	char	*line;
+	char	*ln;
 	int		read_status;
 	int		i;
 
-	map->data = safe_alloc("Error\nFailed to allocate for map", sizeof(char *), map->rows);
-	line = safe_alloc("Error\nFailed to allocate for line", 1, map->cols + 2);
-	if (!map->data || !line)
+	map->data = safe_alloc("Error\nFailed to allocate for map\n",
+			sizeof(char *), map->rows);
+	ln = safe_alloc("Error\nFailed to allocate for line\n", 1, map->cols + 2);
+	if (!map->data || !ln)
 		return (1);
 	i = 0;
 	read_status = 1;
 	while (read_status != 0)
 	{
-		read_status = read(fd, line, map->cols + 1);
+		read_status = read(fd, ln, map->cols + 1);
 		if (read_status == -1)
-			return (perror("Error\nFailed to read map file"), free(line), 1);
+			return (perror("Error\nFailed to read map file\n"), free(ln), 1);
 		if (read_status == 0)
 			break ;
-		if (line[0] == '\n')
-			return (ft_putstr_fd("Error\nEmpty line in map file\n", 2), free(line), 1);
-		map->data[i] = ft_strdup(line);
+		if (ln[0] == '\n')
+			return (ft_putstr_fd("Error\nEmpty line in map\n", 2), free(ln), 1);
+		map->data[i] = ft_strdup(ln);
 		map->data[i][map->cols] = 0;
 		i++;
 	}
-	return (free(line), 0);
+	return (free(ln), 0);
 }
 
 int	read_map(t_map *map, char *file_name)

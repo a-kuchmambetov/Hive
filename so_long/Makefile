@@ -3,7 +3,7 @@ NAME    = so_long
 
 CC      = cc
 CFLAGS  = -Wall -Wextra -Werror -Imlx
-LDFLAGS = -Lmlx -lmlx -lXext -lX11 -lm
+LIBFLAGS = -Lmlx -lmlx -lXext -lX11 -lm
 
 LIBFTDIR = libft
 LIBFT    = $(LIBFTDIR)/libft.a
@@ -20,11 +20,16 @@ $(LIBFT):
 	$(MAKE) -C $(LIBFTDIR)
 
 $(MLX):
-	@[ ! -d "$(MLXDIR)" ] && git clone https://github.com/42paris/minilibx-linux.git $(MLXDIR); \
-	$(MAKE) -C $(MLXDIR)
+	@{ \
+		if [ ! -f "$(MLX)" ]; then echo "libmlx.a missing → recloning"; \
+			rm -rf "$(MLXDIR)"; \
+			git clone https://github.com/42paris/minilibx-linux.git "$(MLXDIR)"; \
+		fi; \
+		$(MAKE) -C "$(MLXDIR)"; \
+	}
 
-$(NAME): $(MLX) $(LIBFT) $(OBJS) 
-	$(CC) $(OBJS) $(CFLAGS) $(LDFLAGS) $(MLX) $(LIBFT)  -o $(NAME)
+$(NAME): $(MLX) $(LIBFT) $(OBJS)
+	$(CC) $(OBJS) $(CFLAGS) $(LIBFLAGS) $(MLX) $(LIBFT) -o $(NAME)
 
 clean:
 	rm -f $(OBJS)
@@ -33,7 +38,6 @@ clean:
 fclean: clean
 	rm -f $(NAME)
 	$(MAKE) -C $(LIBFTDIR) fclean
-	$(MAKE) -C $(MLXDIR) clean
 
 mlxDel:
 	rm -rf mlx
