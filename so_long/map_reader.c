@@ -60,8 +60,7 @@ static int	save_map(t_map *map, int fd)
 	int		read_status;
 	int		i;
 
-	map->data = safe_alloc("Error\nFailed to allocate for map\n",
-			sizeof(char *), map->rows);
+	map->data = safe_alloc("Error\nFailed to allocate for map\n", 8, map->rows);
 	ln = safe_alloc("Error\nFailed to allocate for line\n", 1, map->cols + 2);
 	if (!map->data || !ln)
 		return (1);
@@ -77,7 +76,8 @@ static int	save_map(t_map *map, int fd)
 		if (ln[0] == '\n')
 			return (ft_putstr_fd("Error\nEmpty line in map\n", 2), free(ln), 1);
 		map->data[i] = ft_strdup(ln);
-		map->data[i][map->cols] = 0;
+		if (!map->data[i])
+			return (perror("Error\nFailed to duplicate line\n"), free(ln), 1);
 		i++;
 	}
 	return (free(ln), 0);
